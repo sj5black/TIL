@@ -1,2 +1,2 @@
 # TIL
-Today I Learned // Python, ML DL, Dev
+Today I Learned // Python, ML DL, Dev etc..
