@@ -57,7 +57,9 @@ print(f'R^2 Score: {r2}')  # 테스트 데이터에 대한 R² Score 출력
 ```
 **KeyPoint**
 `random_state`의 역할은 주어진 `X(특징)`와 `Y(타겟)` 데이터 셋의 조합을 바꾸는 것이 아니라, `train data`와 `test data`를 랜덤하게 나누는 과정에서 무작위성을 부여하는 것이다.
+
 &nbsp;
+
 ### 다항 회귀 (비선형 feature, 선형 model)
   - 종속 변수와 독립 변수 간의 비선형 관계를 모델링하는 방법
   - 다항회귀 차수(degree) : 독립 변수의 최대 차수(n)
@@ -294,8 +296,11 @@ print(f"Accuracy: {accuracy_score(y_test, y_pred)}")
 print(f"Classification Report:\n{classification_report(y_test, y_pred)}")
 print(f"Confusion Matrix:\n{confusion_matrix(y_test, y_pred)}")
 ```
+
 ---
+
 &nbsp;
+
 ### 그 외 다양한 분류 모델들
 
 **1. SVM (Support Vector Machine)**
@@ -319,7 +324,9 @@ from sklearn.svm import SVC
 model = SVC(kernel='linear')
 model.fit(X_train, y_train)
 ```
+
 &nbsp;
+
 **2. KNN (K Nearest Neighbors)**
 - 분류와 회귀 분석에 사용되는 비모수적 방법 (parameter 의존성 낮음)
 - 새로운 데이터 포인트를 기존 데이터 포인트 중 가장 가까운 K개의 이웃과 비교하여 분류
@@ -333,7 +340,9 @@ from sklearn.neighbors import KNeighborsClassifier
 model = KNeighborsClassifier(n_neighbors=5)
 model.fit(X_train, y_train)
 ```
+
 &nbsp;
+
 **3. 나이브베이즈 (Naive Bayes)**
 - 베이즈 정리를 기반으로 하는 통계적 분류 기법
 - 각 특징(feature)이 독립적이라고 가정
@@ -355,7 +364,9 @@ from sklearn.naive_bayes import GaussianNB
 model = GaussianNB()
 model.fit(X_train, y_train)
 ```
+
 &nbsp;
+
 **4. 의사결정 나무 (Decision Tree)**
 - 데이터의 특징(feature)을 기준으로 의사결정 규칙을 만들고 이를 바탕으로 데이터를 분류/회귀하는 데 사용
 - 의사결정나무는 트리 구조를 가지며, 각 내부 노드(Node)는 데이터의 특징에 대한 테스트를 나타내고, 각 가지(branch)는 테스트 결과를 나타내며, 각 리프 노드(leaf)는 클래스 레이블을 표현
@@ -368,21 +379,17 @@ model.fit(X_train, y_train)
 >깊이 : 트리의 루트 노드부터 리프 노드까지의 최대 거리
 >분할 기준 : 노드를 나눌 때 사용하는 기준. (Information Gain, Gini Index)
 
-- 정보 이득(Information Gain)
+- 정보 이득(Information Gain)  
 <small>엔트로피(Entropy)값으로 데이터를 나누는 기준. 엔트로피가 낮을수록 불확실성이 적다.</small>
 
 $$
 \text{Information Gain}(D, A) = \text{Entropy}(D) - \sum_{v \in \text{values}(A)} \frac{|D_v|}{|D|} \text{Entropy}(D_v)
 $$
 
-- 지니 계수(Gini Index)
+- 지니 계수(Gini Index)  
   <small>불순도를 측정하는 방법. 지니 계수가 낮을수록 불순도가 적다.</small>
     
-    $$
-    \text{Gini}(D) = 1 - \sum_{i=1}^{C} p_i^2
-    $$
-    
-    <small>$$\scriptsize\textsf{\( p_i \) = 클래스 \( i \)의 비율}$$</small>
+    ![DT](./images/Gini_Index.png)
 
 ```python
 from sklearn.tree import DecisionTreeClassifier
