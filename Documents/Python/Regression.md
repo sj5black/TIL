@@ -108,9 +108,7 @@ print(f'R^2 Score: {r2}')  # 테스트 데이터에 대한 R² Score 출력
 - L2 정규화(regularization)를 사용하여 회귀 계수의 제곱합을 최소화
 - $\lambda$ 는 정규화 강도를 조절하는 hyper_parameter
 
-$\scriptsize\textsf{리지 회귀}$
-$$J(\beta) = \sum_{i=1}^{n} (y_i - \hat{y}_i)^2 + \lambda \sum_{j=1}^{p} \beta_j^2$$
-$$\scriptsize\textsf{}\lambda \scriptsize\textsf{ = 정규화 강도를 조절하는 하이퍼파라미터}$$
+![리지 함수](./images/Ridge_func.png)
 
 ```python
 import numpy as np
@@ -145,7 +143,7 @@ print(f'R^2 Score: {r2}')  # 테스트 데이터에 대한 R² Score 출력
 - L1 정규화(regularization)를 사용하여 회귀 계수의 절대값 합을 최소화
 - $\lambda$ 는 정규화 강도를 조절하는 hyper_parameter
 
-$$J(\beta) = \sum_{i=1}^{n} (y_i - \hat{y}_i)^2 + \lambda \sum_{j=1}^{p} |\beta_j|$$
+![라쏘 함수](./images/Lasso_func.png)
 
 ```python
 import numpy as np
