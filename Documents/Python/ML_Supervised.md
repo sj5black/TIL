@@ -109,7 +109,7 @@ print(f'R^2 Score: {r2}')  # 테스트 데이터에 대한 R² Score 출력
 - L2 정규화(regularization)를 사용하여 회귀 계수의 제곱합을 최소화
 - $\lambda$ 는 정규화 강도를 조절하는 hyper_parameter
 
-![리지 함수](./images/Ridge_func.png)
+<img src="./images/Ridge_func.png" style="width:40%; height:auto;display: block; margin: 0 auto;">
 
 ```python
 import numpy as np
@@ -144,7 +144,7 @@ print(f'R^2 Score: {r2}')  # 테스트 데이터에 대한 R² Score 출력
 - L1 정규화(regularization)를 사용하여 회귀 계수의 절대값 합을 최소화
 - $\lambda$ 는 정규화 강도를 조절하는 hyper_parameter
 
-![라쏘 함수](./images/Lasso_func.png)
+<img src="./images/Lasso_func.png" style="width:40%; height:auto;display: block; margin: 0 auto;">
 
 ```python
 import numpy as np
@@ -307,7 +307,7 @@ print(f"Confusion Matrix:\n{confusion_matrix(y_test, y_pred)}")
 - 데이터를 분류하기 위해 결정 경계(결정 초평면, hyperplane)를 찾아 분류
 - 초평면은 두 클래스 사이의 최대 마진을 보장하는 방식으로 선택
 
-![SVM](./images/SVM.png)
+<img src="./images/SVM.png" style="width:40%; height:auto;display: block; margin: 0 auto;">
 
 $$ \mathbf{w} \cdot \mathbf{x} - b = 0 $$
 ```python
@@ -333,8 +333,9 @@ model.fit(X_train, y_train)
 - 데이터 포인트의 특성을 기준으로 가장 가까운 이웃 탐색
 - 학습 데이터를 기반으로 새로운 데이터 포인트의 클래스를 예측
 
-![KNN](./images/KNN.png)
+<img src="./images/KNN.png" style="width:40%; height:auto;display: block; margin: 0 auto;">
 
+&nbsp;
 ```python
 from sklearn.neighbors import KNeighborsClassifier
 model = KNeighborsClassifier(n_neighbors=5)
@@ -371,7 +372,9 @@ model.fit(X_train, y_train)
 - 데이터의 특징(feature)을 기준으로 의사결정 규칙을 만들고 이를 바탕으로 데이터를 분류/회귀하는 데 사용
 - 의사결정나무는 트리 구조를 가지며, 각 내부 노드(Node)는 데이터의 특징에 대한 테스트를 나타내고, 각 가지(branch)는 테스트 결과를 나타내며, 각 리프 노드(leaf)는 클래스 레이블을 표현
 
-![DT](./images/Decision_Tree.png)
+<img src="./images/Decision_Tree.png" style="width:40%; height:auto;display: block; margin: 0 auto;">
+
+&nbsp;
 
 >노드 : 하나의 특징(feature)에 대한 테스트  
 >루트 노드 : 트리의 최상위 노드로, 전체 데이터셋을 상징  
