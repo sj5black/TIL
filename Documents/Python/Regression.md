@@ -22,9 +22,8 @@
 ### 선형 회귀 (선형)
  - 종속 변수와 하나 이상의 독립 변수 간의 선형 관계를 모델링 하는 방법
 
-
-$$y=β_0​+β_1​x_1​+ϵ$$ $$\scriptsize\textsf{ 단순 선형 회귀}$$ <br>
-$$y=β_0​+β_1​x_1​+β_2​x_2​+⋯+β_n​x_n​+ϵ$$ $$\scriptsize\textsf{ 다중 선형 회귀}$$ 
+$$y=β_0​+β_1​x_1​+ϵ$$
+$$y=β_0​+β_1​x_1​+β_2​x_2​+⋯+β_n​x_n​+ϵ$$
 
 ```python
 import numpy as np
@@ -198,3 +197,101 @@ $$\sigma(z) = \frac{1}{1 + e^{-z}}$$
 </small>
 
 $$J(\theta) = -\frac{1}{m} \sum_{i=1}^{m} \left[ y^{(i)} \log(h_\theta(x^{(i)})) + (1 - y^{(i)}) \log(1 - h_\theta(x^{(i)})) \right]$$
+
+&nbsp;
+### 로지스틱 회귀 실습 (1)
+
+```python
+##### 유방암 데이터 로드/전처리 #####
+import numpy as np
+import pandas as pd
+from sklearn.datasets import load_breast_cancer
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+
+# 데이터 로드
+data = load_breast_cancer()
+X = data.data 
+y = data.target
+# return_X_y = True 설정 시, data, target 동시 반환
+# X, y = load_breast_cancer(return_X_y=True)
+
+# 데이터 분할
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# 데이터 스케일링
+scaler = StandardScaler()  # 평균 0, 분산 1로 스케일링
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test) # 테스트 데이터는 평가왜곡 방지를 위해 전처리과정(스케일링) 제외
+
+##### 모델 학습 #####
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+
+# 모델 생성 및 학습
+model = LogisticRegression()
+model.fit(X_train, y_train)
+
+# 예측
+y_pred = model.predict(X_test)
+
+# 평가
+print(f"Accuracy: {accuracy_score(y_test, y_pred)}")
+print(f"Classification Report:\n{classification_report(y_test, y_pred)}") # 분류 보고서 생성
+print(f"Confusion Matrix:\n{confusion_matrix(y_test, y_pred)}") # 혼동 행렬 생성
+```
+**혼동 행렬이란?**
+<small>모델의 예측 결과를 실제 클래스와 비교하여 얼마나 잘 예측했는지를 나타내는 표 형태의 데이터 구조</small>
+```python
+            Predicted
+            Positive    Negative
+          +-----------------------+
+Actual T  |    TP     |    FN     |
+          |-----------------------|
+       F  |    FP     |    TN     |
+          +-----------------------+
+```
+- True Positive (TP): 실제로 긍정인 샘플을 모델이 긍정으로 정확히 예측한 수.
+- True Negative (TN): 실제로 부정인 샘플을 모델이 부정으로 정확히 예측한 수.
+- False Positive (FP): 실제로 부정인 샘플을 모델이 긍정으로 잘못 예측한 수 (1종 오류).
+- False Negative (FN): 실제로 긍정인 샘플을 모델이 부정으로 잘못 예측한 수 (2종 오류).
+&nbsp;
+### 로지스틱 회귀 실습 (2)
+```python
+import seaborn as sns
+
+# 데이터 로드
+titanic = sns.load_dataset('titanic')
+
+# 필요한 열 선택 및 결측값 처리
+titanic = titanic[['survived', 'pclass', 'sex', 'age', 'sibsp', 'parch', 'fare', 'embarked']].dropna()
+
+# 성별과 탑승한 곳 인코딩
+titanic['sex'] = titanic['sex'].map({'male': 0, 'female': 1})
+titanic['embarked'] = titanic['embarked'].map({'C': 0, 'Q': 1, 'S': 2})  # 탑승한 곳을 숫자로 매핑
+
+# 특성과 타겟 분리
+X = titanic.drop('survived', axis=1)
+y = titanic['survived']
+
+# 데이터 분할
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# 데이터 스케일링
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+# 모델 생성 및 학습
+model = LogisticRegression()
+model.fit(X_train, y_train)
+
+# 예측
+y_pred = model.predict(X_test)
+
+# 평가
+print(f"Accuracy: {accuracy_score(y_test, y_pred)}")
+print(f"Classification Report:\n{classification_report(y_test, y_pred)}")
+print(f"Confusion Matrix:\n{confusion_matrix(y_test, y_pred)}")
+```
+
