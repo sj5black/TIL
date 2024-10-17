@@ -305,7 +305,9 @@ print(f"Confusion Matrix:\n{confusion_matrix(y_test, y_pred)}")
 
 **1. SVM (Support Vector Machine)**
 - 데이터를 분류하기 위해 결정 경계(결정 초평면, hyperplane)를 찾아 분류
-- 초평면은 두 클래스 사이의 최대 마진을 보장하는 방식으로 선택
+- 초평면은 두 클래스 사이의 최대 마진이 되는 지점 
+
+즉, 성향이 다른 부류의 data를 가장 보편적으로 나눌 수 있는 경계를 찾는 모델
 
 <img src="./images/SVM.png" style="width:40%; height:auto;display: block; margin: 0 auto;">
 
@@ -317,7 +319,7 @@ b : section
 
 Margin : 두 클래스 간의 가장 가까운 data point 사이의 거리
 Support vector : 결정 초평면에 가장 가까이 위치한 data point
-kernal function : data를 더 높은 차원으로 mapping하여 선형적으로 분리 할 수 없는 data를 분리하게 유도
+kernel function : data를 더 높은 차원으로 mapping하여 선형적으로 분리 할 수 없는 data를 분리하게 유도
 
 # 사용 예시
 from sklearn.svm import SVC
@@ -392,7 +394,15 @@ $$
 - 지니 계수(Gini Index)  
   <small>불순도를 측정하는 방법. 지니 계수가 낮을수록 불순도가 적다.</small>
     
-    ![DT](./images/Gini_Index.png)
+<img src="./images/Gini_Index.png" style="width:50%; height:auto;display: block; margin: 0 auto;">
+
+<small>
+예를 들어, p1 = 0.5 이고, p2 = 0.5 인 상황이면, 식에 따라 지니 계수 D는
+$D_1 = 1 - {(0.5)^2+(0.5)^2} = 0.5$ 가 된다.  
+
+하지만 p1 = 0.9 이고, p2 = 0.1 인 상황을 가정하면, 지니 계수 D는
+$D_2 = 1 - {(0.9)^2+(0.1)^2} = 0.18$ 이 되어 이전보다 더 낮은 계수값을 가지게 되고, 이렇게 나뉜 클래스의 비율이 불순도가 더 적은 경우이므로, D2 가 분할기준에 더 적합하다고 할 수 있다.
+</small>
 
 ```python
 from sklearn.tree import DecisionTreeClassifier
