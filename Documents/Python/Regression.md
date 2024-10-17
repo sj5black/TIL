@@ -4,7 +4,7 @@
  - 종속 변수와 하나 이상의 독립 변수 간의 선형 관계를 모델링 하는 방법
 
 
-$y=β_0​+β_1​x_1​+ϵ$ $\scriptsize\textsf{ (단순 선형 회귀)}$ 
+$y=β_0​+β_1​x_1​+ϵ$ $\scriptsize\textsf{ (단순 선형 회귀)}$ <br>
 $y=β_0​+β_1​x_1​+β_2​x_2​+⋯+β_n​x_n​+ϵ$ $\scriptsize\textsf{ (다중 선형 회귀)}$ 
 
 ```python
@@ -41,6 +41,7 @@ print(f'R^2 Score: {r2}')
   - 차수가 높을수록 모델이 더 복잡해지며 과적합(overfitting)의 위험 → 적절한 차수 선택 필요
 
 $y=β_0​+β_1​x+β_2​x^2+⋯+β_n​x^n+ϵ$
+
 ```python
 import numpy as np
 import pandas as pd
@@ -79,7 +80,7 @@ print(f'R^2 Score: {r2}')
 - L2 정규화(regularization)를 사용하여 회귀 계수의 제곱합을 최소화
 - $\lambda$ 는 정규화 강도를 조절하는 hyper_parameter
 
-$J(\beta) = \sum_{i=1}^{n} (y_i - \hat{y}_i)^2 + \lambda \sum_{j=1}^{p} \beta_j^2$
+$ J(\beta) = \sum_{i=1}^{n} (y_i - \hat{y}_i)^2 + \lambda \sum_{j=1}^{p} \beta_j^2 $
 
 
 ```python
@@ -115,7 +116,8 @@ print(f'R^2 Score: {r2}')
 - L1 정규화(regularization)를 사용하여 회귀 계수의 절대값 합을 최소화
 - $\lambda$ 는 정규화 강도를 조절하는 hyper_parameter
 
-$J(\beta) = \sum_{i=1}^{n} (y_i - \hat{y}_i)^2 + \lambda \sum_{j=1}^{p} |\beta_j|$
+$ J(\beta) = \sum_{i=1}^{n} (y_i - \hat{y}_i)^2 + \lambda \sum_{j=1}^{p} |\beta_j| $
+
 ```python
 import numpy as np
 import pandas as pd
