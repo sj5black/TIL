@@ -397,6 +397,7 @@ $$
 <img src="./images/Gini_Index.png" style="width:50%; height:auto;display: block; margin: 0 auto;">
 
 <small>
+
 예를 들어, p1 = 0.5 이고, p2 = 0.5 인 상황이면, 식에 따라 지니 계수 D는
 $D_1 = 1 - {(0.5)^2+(0.5)^2} = 0.5$ 가 된다.  
 
