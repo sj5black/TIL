@@ -121,13 +121,14 @@ f"{name.upper()} is {age} years old."
 
 ### TMI
 ```python
-문자열 내 문자 수정 str.replace("A","a") 
-문자열 내 문자 분리 str.split(",")
-문자열 공백 제거 str.strip()
-문자열 앞 3자리 가져오기 str[:3]
-문자열 뒤 4자리 가져오기 str[-4:]
-문자열 숫자체크 str.isdigit()
-조건 체크 len(str) in (4,6) --> str의 길이가 4 또는 6인지?
+문자열 내 문자 수정 : str.replace("A","a") 
+문자열 내 문자 분리 : str.split(",")
+문자열 공백 제거 : str.strip()
+문자열 앞 3자리 가져오기 : str[:3]
+문자열 뒤 4자리 가져오기 : str[-4:]
+문자열 숫자체크 : str.isdigit()
+문자열 대소문자 변경 : str.lower() / str.upper()
+조건 체크 : len(str) in (4,6) # str의 길이가 4 or 6?
 ```
 ---
 # 컬렉션 자료형
