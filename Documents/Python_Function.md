@@ -53,13 +53,16 @@ input("Message : ")  # 입력받은 값을 문자열로 반환
  - 함수는 여러 매개변수에 대해 기본값을 가질 수 있다.
  - 기본값이 있는 매개변수는 항상 기본값이 없는 매개변수 뒤에 와야한다.
 </small>
+
 ```python
 def order(item, quantity=1, price=1000):
 ```
+
 **복수 반환값**
 <small>
   - 여러 개의 반환값을 반환하는 경우 **튜플** 형태로 반환
 </small>
+
 ```python
 def calculate(a, b):
     s = a + b
@@ -76,6 +79,7 @@ print(d)  # 5
  - 정해지지 않은 개수의 인수를 받고 싶을 때 사용
  - `*args`와 `*kwargs` 의 특정 매개변수 명칭으로 구분
  - `*args`와 `**kwargs`를 함께 사용할 때에는 `*args`를 먼저, `**kwargs`를 나중에 정의
+ 
  ```python
  # *args (tuple type)
  def add(*args):
