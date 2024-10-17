@@ -243,12 +243,12 @@ print(f"Confusion Matrix:\n{confusion_matrix(y_test, y_pred)}") # 혼동 행렬 
 **혼동 행렬이란?**
 <small>모델의 예측 결과를 실제 클래스와 비교하여 얼마나 잘 예측했는지를 나타내는 표 형태의 데이터 구조</small>
 ```python
-            Predicted
+                  Predicted
             Positive    Negative
           +-----------------------+
-Actual T  |    TP     |    FN     |
+          |    TP     |    FN     |
           |-----------------------|
-       F  |    FP     |    TN     |
+          |    FP     |    TN     |
           +-----------------------+
 ```
 - True Positive (TP): 실제로 긍정인 샘플을 모델이 긍정으로 정확히 예측한 수.
@@ -271,8 +271,8 @@ titanic['sex'] = titanic['sex'].map({'male': 0, 'female': 1})
 titanic['embarked'] = titanic['embarked'].map({'C': 0, 'Q': 1, 'S': 2})  # 탑승한 곳을 숫자로 매핑
 
 # 특성과 타겟 분리
-X = titanic.drop('survived', axis=1)
-y = titanic['survived']
+X = titanic.drop('survived', axis=1) # delete `survived` for featured data
+y = titanic['survived'] # insert `survived` to target data
 
 # 데이터 분할
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
@@ -294,4 +294,98 @@ print(f"Accuracy: {accuracy_score(y_test, y_pred)}")
 print(f"Classification Report:\n{classification_report(y_test, y_pred)}")
 print(f"Confusion Matrix:\n{confusion_matrix(y_test, y_pred)}")
 ```
+---
+&nbsp;
+### 그 외 다양한 분류 모델들
 
+**1. SVM (Support Vector Machine)**
+- 데이터를 분류하기 위해 결정 경계(결정 초평면, hyperplane)를 찾아 분류
+- 초평면은 두 클래스 사이의 최대 마진을 보장하는 방식으로 선택
+
+![SVM](./images/SVM.png)
+
+$$ \mathbf{w} \cdot \mathbf{x} - b = 0 $$
+```python
+w : weight vector
+x : input vector
+b : section
+
+Margin : 두 클래스 간의 가장 가까운 data point 사이의 거리
+Support vector : 결정 초평면에 가장 가까이 위치한 data point
+kernal function : data를 더 높은 차원으로 mapping하여 선형적으로 분리 할 수 없는 data를 분리하게 유도
+
+# 사용 예시
+from sklearn.svm import SVC
+model = SVC(kernel='linear')
+model.fit(X_train, y_train)
+```
+&nbsp;
+**2. KNN (K Nearest Neighbors)**
+- 분류와 회귀 분석에 사용되는 비모수적 방법 (parameter 의존성 낮음)
+- 새로운 데이터 포인트를 기존 데이터 포인트 중 가장 가까운 K개의 이웃과 비교하여 분류
+- 데이터 포인트의 특성을 기준으로 가장 가까운 이웃 탐색
+- 학습 데이터를 기반으로 새로운 데이터 포인트의 클래스를 예측
+
+![KNN](./images/KNN.png)
+
+```python
+from sklearn.neighbors import KNeighborsClassifier
+model = KNeighborsClassifier(n_neighbors=5)
+model.fit(X_train, y_train)
+```
+&nbsp;
+**3. 나이브베이즈 (Naive Bayes)**
+- 베이즈 정리를 기반으로 하는 통계적 분류 기법
+- 각 특징(feature)이 독립적이라고 가정
+- 주어진 데이터 포인트가 특정 클래스에 속할 확률을 계산하여 분류
+- 주로 텍스트 분류 문제에서 널리 사용
+
+$$ P(A|B) = \frac{P(B|A) \cdot P(A)}{P(B)} $$
+>*P*(*A*∣*B*) : B가 주어졌을 때 A의 확률 (사후 확률)
+>*P*(*B*∣*A*) : A가 주어졌을 때 B의 확률 (우도)
+>*P*(*A*) : A의 사전 확률
+>*P*(*B*) : B의 사전 확률
+
+```python
+Gaussian NB : 특징들이 연속적이고 정규 분포를 따르는 경향일 때 사용
+Bernoulli NB : 특징들이 이진수(0,1)로 표현되는 경우 사용
+Multinomial NB : 특징들이 다항 분포를 따르는 경우 사용
+
+from sklearn.naive_bayes import GaussianNB
+model = GaussianNB()
+model.fit(X_train, y_train)
+```
+&nbsp;
+**4. 의사결정 나무 (Decision Tree)**
+- 데이터의 특징(feature)을 기준으로 의사결정 규칙을 만들고 이를 바탕으로 데이터를 분류/회귀하는 데 사용
+- 의사결정나무는 트리 구조를 가지며, 각 내부 노드(Node)는 데이터의 특징에 대한 테스트를 나타내고, 각 가지(branch)는 테스트 결과를 나타내며, 각 리프 노드(leaf)는 클래스 레이블을 표현
+
+![DT](./images/Decision_Tree.png)
+
+>노드 : 하나의 특징(feature)에 대한 테스트
+>루트 노드 : 트리의 최상위 노드로, 전체 데이터셋을 상징
+>리프 노드 : 트리의 끝 노드로, 최종 클래스 레이블을 상징
+>깊이 : 트리의 루트 노드부터 리프 노드까지의 최대 거리
+>분할 기준 : 노드를 나눌 때 사용하는 기준. (Information Gain, Gini Index)
+
+- 정보 이득(Information Gain)
+<small>엔트로피(Entropy)값으로 데이터를 나누는 기준. 엔트로피가 낮을수록 불확실성이 적다.</small>
+
+$$
+\text{Information Gain}(D, A) = \text{Entropy}(D) - \sum_{v \in \text{values}(A)} \frac{|D_v|}{|D|} \text{Entropy}(D_v)
+$$
+
+- 지니 계수(Gini Index)
+  <small>불순도를 측정하는 방법. 지니 계수가 낮을수록 불순도가 적다.</small>
+    
+    $$
+    \text{Gini}(D) = 1 - \sum_{i=1}^{C} p_i^2
+    $$
+    
+    <small>$$\scriptsize\textsf{\( p_i \) = 클래스 \( i \)의 비율}$$</small>
+
+```python
+from sklearn.tree import DecisionTreeClassifier
+model = DecisionTreeClassifier(random_state=42)  # random 시드는 트리의 재현성을 위해 사용
+model.fit(X_train, y_train)
+```
