@@ -15,6 +15,12 @@ result1 = sqrt(49)
 result2 = pow(2, 3)
 print(result1)  # 7.0
 print(result2)  # 8.0
+
+# call all stuffs in math module with *
+from math import *  
+
+result = cos(0)
+print(result)  # 1.0
 ```
 
 ### 모듈 탐색 경로
