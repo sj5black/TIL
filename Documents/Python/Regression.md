@@ -108,7 +108,7 @@ print(f'R^2 Score: {r2}')  # 테스트 데이터에 대한 R² Score 출력
 - L2 정규화(regularization)를 사용하여 회귀 계수의 제곱합을 최소화
 - $\lambda$ 는 정규화 강도를 조절하는 hyper_parameter
 
-$$ J(\beta) = \sum_{i=1}^{n} (y_i - \hat{y}_i)^2 + \lambda \sum_{j=1}^{p} \beta_j^2 $$
+$$J(\beta) = \sum_{i=1}^{n} (y_i - \hat{y}_i)^2 + \lambda \sum_{j=1}^{p} \beta_j^2$$
 
 
 ```python
@@ -144,7 +144,7 @@ print(f'R^2 Score: {r2}')  # 테스트 데이터에 대한 R² Score 출력
 - L1 정규화(regularization)를 사용하여 회귀 계수의 절대값 합을 최소화
 - $\lambda$ 는 정규화 강도를 조절하는 hyper_parameter
 
-$$ J(\beta) = \sum_{i=1}^{n} (y_i - \hat{y}_i)^2 + \lambda \sum_{j=1}^{p} |\beta_j| $$
+$$J(\beta) = \sum_{i=1}^{n} (y_i - \hat{y}_i)^2 + \lambda \sum_{j=1}^{p} |\beta_j|$$
 
 ```python
 import numpy as np
