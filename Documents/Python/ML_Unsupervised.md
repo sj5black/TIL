@@ -302,7 +302,7 @@ tsne = TSNE(n_components=2, random_state=42)
 # t-SNE 학습 및 변환
 X_tsne = tsne.fit_transform(X_scaled)
 
-# 변환된 데이터의 크기 확인
+# 변환된 데이터 크기 확인
 print(X_tsne.shape)
 
 # 2차원 시각화

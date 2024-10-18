@@ -15,7 +15,7 @@ data = data[['Age', 'Annual Income (k$)', 'Spending Score (1-100)']]
 scaler = StandardScaler()
 data_scaled = scaler.fit_transform(data)
 
-# 최적의 k 찾기 (엘보우 방법)
+# 최적의 k 찾기 (엘보우 방법) --
 inertia = []
 K = range(1, 11)
 for k in K:
