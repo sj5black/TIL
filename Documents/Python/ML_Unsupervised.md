@@ -1,4 +1,4 @@
-# 군집화모델
+# 군집화 (Clustering)
 ### k-means clustering
 1. **초기화** : k개의 군집 중심을 랜덤하게 설정
 2. **할당** : 각 데이터 포인트를 가장 가까운 군집 중심에 할당
@@ -18,12 +18,12 @@ k를 증가시키면서 각 k에 대한 군집의 응집도를 계산하고, 이
 &nbsp;
 **그래프 라이브러리**
 - `matplotlib.pyplot.plot`
-    - $\scriptsize\textsf{K, inertia, 'bx-' : x축, y축, 그래프 스타일을 설정}$
+    - K, inertia, 'bx-' : x축, y축, 그래프 스타일을 설정
 - `seaborn.scatterplot`
-    - $\scriptsize\textsf{x=data['Age'] : x축 데이터}$
-    - $\scriptsize\textsf{y=data['Annual Income (k\$)'] : y축 데이터}$
-    - $\scriptsize\textsf{hue=data['Cluster'] : 색상에 따라 군집을 구분}$
-    - $\scriptsize\textsf{palette='viridis' : 색상 팔레트 설정}$
+    - x=data['Age'] : x축 데이터
+    - y=data['Annual Income (k\$)'] : y축 데이터
+    - hue=data['Cluster'] : 색상에 따라 군집을 구분
+    - palette='viridis' : 색상 팔레트 설정
 
 ```python
 import numpy as np
