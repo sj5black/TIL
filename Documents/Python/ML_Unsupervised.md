@@ -208,6 +208,14 @@ for eps in eps_values:
 4. **주성분 선택** : 고유값이 큰 순서대로 고유벡터를 정렬하여 주성분 선택
 5. 데이터 변환 : 선택된 주성분을 사용하여 데이터를 저차원 공간으로 변환
 
+**고유값이 큰 순서대로 주성분을 선택하는 이유?**
+- 고유값이 클수록 데이터들이 고유벡터에 정사영되었을 때 (차원이 축소되었을 때) 축소된 차원에서 데이터가 넓게 분포되어 있다는 뜻이고, 이는 곧 **원본 데이터의 특징에 대한 손상이 최소화**된다는 의미이기 때문이다.
+
+<SMALL>
+참고자료 (선형변환/고유값의 기하학적 의미) : https://www.youtube.com/watch?v=7dmV3p3Iy90&t=673s  
+
+참고자료 (주성분분석/PCA) : https://www.youtube.com/watch?v=YEdscCNsinU  
+</SMALL>
 ```python
 from sklearn.datasets import fetch_openml
 import pandas as pd
@@ -367,7 +375,8 @@ plt.ylabel('LDA Component 2')
 plt.show()
 ```
 
-**Math 폴더에 추가 예정인 내용**
+**Math 폴더에 추가 예정인 내용**  
+&nbsp;
 Linear Algebra
  - linear transformation
  - eigen-value, eigen-vector
@@ -378,4 +387,5 @@ Statistics
 - t-Distribution
 
 Calculus
- - Gradient Descent
+- Gradient
+- Gradient Descent
