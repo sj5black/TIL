@@ -1,3 +1,0 @@
-**/test.py
-**/MyPC_pipList.txt
-**/myenv1014_requirements.txt
