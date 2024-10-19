@@ -200,3 +200,46 @@ y_pred_gbm = gbm_model.predict(X_test_scaled)
 mse_gbm = mean_squared_error(y_test, y_pred_gbm)
 print(f'GBM 모델의 MSE: {mse_gbm}')
 ```
+---
+## XGBoost (eXtreme Gradient Boosting) ★★★
+- 그래디언트 부스팅 알고리즘을 기반으로 한 고성능 앙상블 학습 기법
+- 효율성, 유연성, 이식성을 목표로 설계되어 다양한 머신러닝 대회에서 우수한 성능 발휘
+- **병렬 처리** : 트리의 분할을 병렬로 수행하여 학습 속도 향상
+- **조기 종료** : 검증 데이터셋의 성능이 향상되지 않으면 학습을 조기에 종료하여 과적합 방지
+- **정규화** : L1 및 L2 정규화를 통해 모델의 복잡도를 조절하고 과적합 방지
+- **유연성** : 다양한 손실 함수와 평가 지표를 지원하여 다양한 문제에 적용 가능
+
+```python
+# from sklearn.ensemble import BaggingRegressor
+# from sklearn.tree import DecisionTreeRegressor
+from sklearn.metrics import mean_squared_error
+from sklearn.datasets import load_breast_cancer
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+import xgboost as xgb
+
+# 유방암 데이터 로드
+cancer_data = load_breast_cancer()
+X, y = cancer_data.data, cancer_data.target
+
+# 데이터 분할
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# 데이터 스케일링
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+
+# XGBoost 모델 생성
+xgb_model = xgb.XGBRegressor(n_estimators=100, learning_rate=0.1, max_depth=3, random_state=42)
+
+# 모델 학습
+xgb_model.fit(X_train_scaled, y_train)
+
+# 예측
+y_pred_xgb = xgb_model.predict(X_test_scaled)
+
+# 평가
+mse_xgb = mean_squared_error(y_test, y_pred_xgb)
+print(f'XGBoost 모델의 MSE: {mse_xgb}')
+```
