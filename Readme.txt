@@ -8,7 +8,7 @@
  - Algorithm code
 
 
-
+<img src="./images/Ridge_func.png" style="width:40%; height:auto;display: block; margin: 0 auto;">
 =======install settings=======
 
 venv settings - myenv1014
