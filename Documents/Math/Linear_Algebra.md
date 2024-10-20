@@ -7,12 +7,10 @@
 
 <img src="./images/determinant.png" style="width:70%; height:auto;display: block; margin: 0 auto;">
 
-자료 출처 : https://blog.naver.com/songsite123/223320410409
+출처 : https://blog.naver.com/songsite123/223320410409
  
-
-
-자료 출처 : https://blog.naver.com/songsite123/223320410409
- 
+**두 basis 가 선형 종속일 때**
+<img src="./images/Linear_depen.png" style="width:70%; height:auto;display: block; margin: 0 auto;">
 
 ### Reduced Row-echolon form (RRef) 특징
 
