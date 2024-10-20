@@ -1,14 +1,11 @@
-선형 대수 TMI
- 
+### Determinant 의 기하학적 의미
 
-1. determinant 의 기하학적 의미
-
-각 행렬의 열좌표를 기저벡터의 방향으로 보면, determinant값은 선형 변환된 좌표계의 단위면적값과 동일
-
-det(A) 가 0이란 뜻은 기저벡터중 일부가 서로 종속관계여서 더 낮은 차원으로 축소되었음을 의미.
+  각 행렬의 열좌표를 기저벡터의 방향으로 보면, determinant값은 선형 변환된 좌표계의 단위면적값과 동일.
+즉, det(A) 가 0이란 뜻은 기저벡터중 일부가 서로 종속관계여서 더 낮은 차원으로 축소되었음을 의미.
 
 (이미 소실된 기저벡터는 역행렬만을 곱해서 복원할 수 없으므로, det(A) 가 0인 경우 역행렬은 존재 X)
 
+<img src="./images/determinant.png" style="width:70%; height:auto;display: block; margin: 0 auto;">
 
 자료 출처 : https://blog.naver.com/songsite123/223320410409
  
@@ -17,7 +14,7 @@ det(A) 가 0이란 뜻은 기저벡터중 일부가 서로 종속관계여서 �
 자료 출처 : https://blog.naver.com/songsite123/223320410409
  
 
-2. Reduced Row-echolon form 특징
+### Reduced Row-echolon form (RRef) 특징
 
  - 모든 행렬은 행동치인 기약행사다리꼴을 유일하게 가진다.
  - 행렬 AA의 행동치인 기약행사다리꼴이 단위행렬 II일 필요충분 조건은 AA의 역행렬이 존재한다는 것이다.
@@ -29,9 +26,8 @@ det(A) 가 0이란 뜻은 기저벡터중 일부가 서로 종속관계여서 �
 
  
 
-3. 전치 행렬(Traspose Matrix)
+### 전치 행렬(Traspose Matrix)
 
- 
 
 주요 개념:
 
@@ -59,7 +55,7 @@ blog.naver.com
 
  
 
-4. 선형 변환(Linear Transformation)
+### 선형 변환(Linear Transformation)
 
 https://blog.naver.com/songsite123/223319658381 
 
@@ -71,11 +67,7 @@ https://blog.naver.com/songsite123/223319658381
 blog.naver.com
  
 
-5. 고유값과 고유 벡터 (eigen-value, eigen-vector)
-
-
-
- 
+### 고유값과 고유 벡터 (eigen-value, eigen-vector)
 
 >> 쉽게 말해서 특정 벡터 x 에 A라는 선형 변환을 시도했는데, 변환된 벡터가 x의 상수(람다)배로 표현되는 경우, 람다를 고유값이라 하고, x를 고유 벡터라 한다. 구하는 순서는
 
