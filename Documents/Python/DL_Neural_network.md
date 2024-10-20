@@ -86,3 +86,113 @@ $$
 
 ---
 # 인공 신경망 (ANN)
+ - 생물학적 신경망을 모방하여 설계된 컴퓨팅 시스템
+ - 입력층(Input Layer), 은닉층(Hidden Layer), 출력층(Output Layer)으로 구성되며, 각 층은 뉴런(Neuron)으로 구성
+
+ <img src="./images/ANN.png" style="width:60%; height:auto;display: block; margin: 0 auto;">
+ &nbsp;
+ <img src="./images/ANN_process.png" style="width:60%; height:auto;display: block; margin: 0 auto;">
+
+&nbsp;
+
+ 1. **순전파 (Forward Propagation)**
+    - 입력 데이터를 통해 각 층의 뉴런이 활성화되고, 최종 출력 값 계산
+    - 각 뉴런은 입력 값에 가중치(weight)를 곱하고, 바이어스(bias)를 더한 후 활성화 함수(activation function)를 통해 출력 값 결정
+2. **손실 계산 (Loss Calculation)**
+    - 예측 값과 실제 값의 차이를 손실 함수(Loss Function)로 계산
+3. **역전파 (Backpropagation)**
+    - 손실 함수의 기울기를 출력층에서 입력층 방향으로 계산하고, 이를 바탕으로 가중치를 업데이트
+
+### 출력레이어의 유형과 활용
+
+신경망의 최종 예측 값을 출력하는 층으로, 문제의 유형에 따라 다양한 형태로 구성
+
+1. **회귀 문제 (Regression)**:
+    - 출력 레이어의 뉴런 수는 예측하려는 연속적인 값의 차원과 동일
+    - 활성화 함수로는 주로 선형 함수(linear function)를 사용
+2. **이진 분류 문제 (Binary Classification)**:
+    - 출력 레이어의 뉴런 수는 1입니다.
+    - 활성화 함수로는 시그모이드 함수(Sigmoid Function)를 사용하여 출력 값을 0과 1 사이의 확률로 변환
+3. **다중 클래스 분류 문제 (Multi-Class Classification)**:
+    - 출력 레이어의 뉴런 수는 예측하려는 클래스 수와 동일
+    - 활성화 함수로는 소프트맥스 함수(Softmax Function)를 사용하여 각 클래스에 대한 확률 출력
+
+```PYTHON
+import torch
+import torch.nn as nn
+import torch.optim as optim
+import torchvision
+import torchvision.transforms as transforms
+
+# 데이터셋 전처리
+transform = transforms.Compose([
+    transforms.ToTensor(),
+    transforms.Normalize((0.5,), (0.5,))
+])
+
+# MNIST 데이터셋 로드
+trainset = torchvision.datasets.MNIST(root='./data', train=True, download=True, transform=transform)
+trainloader = torch.utils.data.DataLoader(trainset, batch_size=64, shuffle=True)
+
+testset = torchvision.datasets.MNIST(root='./data', train=False, download=True, transform=transform)
+testloader = torch.utils.data.DataLoader(testset, batch_size=64, shuffle=False)
+
+class SimpleANN(nn.Module):
+    def __init__(self):
+        super(SimpleANN, self).__init__()
+        self.fc1 = nn.Linear(28 * 28, 128)  # 입력층에서 은닉층으로
+        self.fc2 = nn.Linear(128, 64)       # 은닉층에서 은닉층으로
+        self.fc3 = nn.Linear(64, 10)        # 은닉층에서 출력층으로
+
+    def forward(self, x):
+        x = x.view(-1, 28 * 28)  # 입력 이미지를 1차원 벡터로 변환
+        x = torch.relu(self.fc1(x))
+        x = torch.relu(self.fc2(x))
+        x = self.fc3(x)
+        return x
+
+# 모델 초기화
+model = SimpleANN()
+
+# 손실 함수와 최적화 알고리즘 정의
+criterion = nn.CrossEntropyLoss()
+# 확률적 경사 하강법(Stochastic Gradient Descent) 최적화 알고리즘 정의
+# lr은 학습률, momentum은 모멘텀 값을 지정
+optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
+
+# 모델 학습
+for epoch in range(10):  # 10 에포크 동안 학습
+    running_loss = 0.0
+    for i, data in enumerate(trainloader, 0):
+        inputs, labels = data
+
+        # 기울기 초기화
+        optimizer.zero_grad()
+
+        # 순전파 + 역전파 + 최적화
+        outputs = model(inputs)
+        loss = criterion(outputs, labels)
+        loss.backward()
+        optimizer.step()
+
+        # 손실 출력
+        running_loss += loss.item()
+        if i % 100 == 99:  # 매 100 미니배치마다 출력
+            print(f'[Epoch {epoch + 1}, Batch {i + 1}] loss: {running_loss / 100:.3f}')
+            running_loss = 0.0
+
+print('Finished Training')
+
+correct = 0
+total = 0
+with torch.no_grad():
+    for data in testloader:
+        images, labels = data
+        outputs = model(images)
+        _, predicted = torch.max(outputs.data, 1)
+        total += labels.size(0)
+        correct += (predicted == labels).sum().item()
+
+print(f'Accuracy of the network on the 10000 test images: {100 * correct / total:.2f}%')
+
+```
