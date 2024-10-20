@@ -199,7 +199,7 @@ print(f'Accuracy of the network on the 10000 test images: {100 * correct / total
 TMI
 - `torch.nn.Module`: 모든 신경망 모듈의 기본 클래스입니다.  사용자 정의 신경망은 이 클래스를 상속받아야 합니다.
 - `nn.Linear`: 선형 변환을 적용하는 완전 연결(fully connected) 레이어를 정의합니다.
-    - $\scriptsize\textsf{nn.Linear(in\_features, out\_features)는 입력 특징의 수와 출력 특징의 수를 지정합니다.}$
+    - nn.Linear(in_features, out_features)는 입력 특징의 수와 출력 특징의 수를 지정합니다.
 - `torch.relu`: ReLU 활성화 함수를 적용합니다.
 - `view`: 텐서의 크기를 변경합니다.
     - $\scriptsize\textsf{x.view(-1, 28 * 28)은 입력 이미지를 1차원 벡터로 변환합니다.}$
