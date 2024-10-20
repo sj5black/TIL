@@ -194,5 +194,23 @@ with torch.no_grad():
         correct += (predicted == labels).sum().item()
 
 print(f'Accuracy of the network on the 10000 test images: {100 * correct / total:.2f}%')
-
 ```
+
+TMI
+- `torch.nn.Module`: 모든 신경망 모듈의 기본 클래스입니다.  사용자 정의 신경망은 이 클래스를 상속받아야 합니다.
+- `nn.Linear`: 선형 변환을 적용하는 완전 연결(fully connected) 레이어를 정의합니다.
+    - $\scriptsize\textsf{nn.Linear(in\_features, out\_features)는 입력 특징의 수와 출력 특징의 수를 지정합니다.}$
+- `torch.relu`: ReLU 활성화 함수를 적용합니다.
+- `view`: 텐서의 크기를 변경합니다.
+    - $\scriptsize\textsf{x.view(-1, 28 * 28)은 입력 이미지를 1차원 벡터로 변환합니다.}$
+- `nn.CrossEntropyLoss`: 다중 클래스 분류 문제에서 주로 사용되는 손실 함수입니다. 예측 값과 실제 값 사이의 교차 엔트로피 손실을 계산합니다.
+- `optim.SGD`: 확률적 경사 하강법(Stochastic Gradient Descent) 최적화 알고리즘을 정의합니다.
+    - $\scriptsize\textsf{lr은 학습률, momentum은 모멘텀 값을 지정합니다.}$
+- `optimizer.zero_grad()`: 이전 단계에서 계산된 기울기를 초기화합니다.
+- `loss.backward()`: 역전파를 통해 기울기를 계산합니다.
+- `optimizer.step()`: 계산된 기울기를 바탕으로 가중치를 업데이트합니다.
+- `torch.no_grad()`: 평가 단계에서는 기울기를 계산할 필요가 없으므로, 이를 비활성화하여 메모리 사용을 줄입니다.
+- `torch.max`: 텐서의 최대 값을 찾습니다.
+    - $\scriptsize\textsf{torch.max(outputs.data, 1)은 각 샘플에 대해 가장 높은 확률을 가진 클래스를 반환합니다.}$
+- `labels.size(0)`: 배치 크기를 반환합니다.
+- `(predicted == labels).sum().item()`: 예측 값과 실제 값이 일치하는 샘플의 수를 계산합니다.
