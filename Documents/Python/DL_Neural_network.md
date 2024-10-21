@@ -214,3 +214,17 @@ TMI
     - $\scriptsize\textsf{torch.max(outputs.data, 1)은 각 샘플에 대해 가장 높은 확률을 가진 클래스를 반환합니다.}$
 - `labels.size(0)`: 배치 크기를 반환합니다.
 - `(predicted == labels).sum().item()`: 예측 값과 실제 값이 일치하는 샘플의 수를 계산합니다.
+---
+# 합성곱 신경망 (CNN)
+- 이미지와 같은 2차원 데이터의 특징을 효과적으로 추출하기 위해 설계된 신경망
+- 주로 합성곱 층(Convolutional Layer), 풀링 층(Pooling Layer), 완전 연결 층(Fully Connected Layer)으로 구성
+
+합성곱 층 (Convolutional Layer):
+$\scriptsize\textsf{ - 입력 이미지에 필터(커널)를 적용하여 특징 맵(feature map)을 생성}$
+$\scriptsize\textsf{ - 필터는 이미지의 국소적인 패턴을 학습}$
+풀링 층 (Pooling Layer)
+$\scriptsize\textsf{ - 특징 맵의 크기를 줄이고, 중요한 특징을 추출}$
+$\scriptsize\textsf{ - 주로 Max Pooling과 Average Pooling 사용}$
+완전 연결 층 (Fully Connected Layer)
+$\scriptsize\textsf{ - 추출된 특징을 바탕으로 최종 예측을 수행}$
+$\scriptsize\textsf{ - CNN이라는 분석레이어를 통해 추출한 특성을 바탕으로 결론 도출}$
