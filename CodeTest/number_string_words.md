@@ -14,6 +14,7 @@ img1.png
 
 참고로 각 숫자에 대응되는 영단어는 다음 표와 같습니다.
 
+<pre>
 숫자	영단어  
 0   	zero  
 1   	one  
@@ -25,6 +26,7 @@ img1.png
 7   	seven  
 8   	eight  
 9   	nine  
+</pre>
 
 제한사항  
 1 ≤ s의 길이 ≤ 50  
@@ -32,13 +34,14 @@ s가 "zero" 또는 "0"으로 시작하는 경우는 주어지지 않습니다.
 
 return 값이 1 이상 2,000,000,000 이하의 정수가 되는 올바른 입력만 s로 주어집니다.  
 
-입출력 예
+입출력 예 
+<pre> 
 s               	result  
 "one4seveneight"	1478  
 "23four5six7"   	234567  
 "2three45sixseven"	234567  
 "123"	            123  
-
+</pre>
 ---
 ```python
 def solution(s):
