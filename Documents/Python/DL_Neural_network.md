@@ -219,12 +219,136 @@ TMI
 - 이미지와 같은 2차원 데이터의 특징을 효과적으로 추출하기 위해 설계된 신경망
 - 주로 합성곱 층(Convolutional Layer), 풀링 층(Pooling Layer), 완전 연결 층(Fully Connected Layer)으로 구성
 
-합성곱 층 (Convolutional Layer):
-$\scriptsize\textsf{ - 입력 이미지에 필터(커널)를 적용하여 특징 맵(feature map)을 생성}$
-$\scriptsize\textsf{ - 필터는 이미지의 국소적인 패턴을 학습}$
-풀링 층 (Pooling Layer)
-$\scriptsize\textsf{ - 특징 맵의 크기를 줄이고, 중요한 특징을 추출}$
-$\scriptsize\textsf{ - 주로 Max Pooling과 Average Pooling 사용}$
+
 완전 연결 층 (Fully Connected Layer)
 $\scriptsize\textsf{ - 추출된 특징을 바탕으로 최종 예측을 수행}$
 $\scriptsize\textsf{ - CNN이라는 분석레이어를 통해 추출한 특성을 바탕으로 결론 도출}$
+
+### **합성곱 층 (Convolutional Layer)**
+
+- 합성곱 연산은 입력 이미지에 필터(커널)를 적용하여 특징 맵을 생성하는 과정
+- 필터는 작은 크기의 행렬로 이미지의 국소적인 패턴을 학습
+
+1. **합성곱 연산**:
+    - 필터를 이미지의 각 위치에 슬라이딩하며, 필터와 이미지의 해당 부분 간의 내적(dot product)을 계산
+    - 계산된 값은 특징(feature) 맵의 해당 위치에 저장
+2. **필터의 역할**:
+    - 필터는 이미지의 에지(edge), 코너(corner), 텍스처(texture) 등 다양한 국소적인 패턴을 학습
+    - 여러 개의 필터를 사용하여 다양한 특징 맵 생성
+
+### **풀링 층 (Pooling Layer)**
+
+- 특징 맵의 크기를 줄이고, 중요한 특징을 추출하는 역할을 합니다. 
+- 주로 Max Pooling과 Average Pooling이 사용
+
+1. **Max Pooling**:
+    - 필터 크기 내에서 최대 값을 선택합니다.
+    - 중요한 특징을 강조하고, 불필요한 정보를 제거합니다.
+2. **Average Pooling**:
+    - 필터 크기 내에서 평균 값을 계산합니다.
+    - 특징 맵의 크기를 줄이면서, 정보의 손실을 최소화합니다.
+
+### **완전 연결층 (Fully Connected Layer)**
+ - 추출된 특징을 바탕으로 최종 예측을 수행
+ - CNN이라는 분석레이어를 통해 추출한 특성을 바탕으로 결론 도출
+
+```python
+import torch
+import torch.nn as nn
+import torch.optim as optim
+import torchvision
+import torchvision.transforms as transforms
+
+# 데이터셋 전처리
+transform = transforms.Compose([
+    transforms.ToTensor(),
+    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+])
+
+# CIFAR-10 데이터셋 로드
+trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=transform)
+trainloader = torch.utils.data.DataLoader(trainset, batch_size=64, shuffle=True)
+
+testset = torchvision.datasets.CIFAR10(root='./data', train=False, download=True, transform=transform)
+testloader = torch.utils.data.DataLoader(testset, batch_size=64, shuffle=False)
+
+# CNN 모델 정의
+class SimpleCNN(nn.Module):
+    def __init__(self):
+        super(SimpleCNN, self).__init__()
+        self.conv1 = nn.Conv2d(3, 32, 3, padding=1)  # 입력 채널 3, 출력 채널 32, 커널 크기 3x3
+        self.pool = nn.MaxPool2d(2, 2)               # 풀링 크기 2x2
+        self.conv2 = nn.Conv2d(32, 64, 3, padding=1) # 입력 채널 32, 출력 채널 64, 커널 크기 3x3
+        self.fc1 = nn.Linear(64 * 8 * 8, 512)        # 완전 연결 층
+        self.fc2 = nn.Linear(512, 10)                # 출력 층 (10개의 클래스)
+
+    def forward(self, x):
+        x = self.pool(torch.relu(self.conv1(x)))
+        x = self.pool(torch.relu(self.conv2(x)))
+        x = x.view(-1, 64 * 8 * 8)  # 플래튼
+        x = torch.relu(self.fc1(x))
+        x = self.fc2(x)
+        return x
+
+# 모델 초기화
+model = SimpleCNN()
+
+# 손실 함수와 최적화 알고리즘 정의
+criterion = nn.CrossEntropyLoss()
+optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
+
+# 모델 학습
+for epoch in range(10):  # 10 에포크 동안 학습
+    running_loss = 0.0
+    for i, data in enumerate(trainloader, 0):
+        inputs, labels = data
+
+        # 기울기 초기화
+        optimizer.zero_grad()
+
+        # 순전파 + 역전파 + 최적화
+        outputs = model(inputs)
+        loss = criterion(outputs, labels)
+        loss.backward()
+        optimizer.step()
+
+        # 손실 출력
+        running_loss += loss.item()
+        if i % 100 == 99:  # 매 100 미니배치마다 출력
+            print(f'[Epoch {epoch + 1}, Batch {i + 1}] loss: {running_loss / 100:.3f}')
+            running_loss = 0.0
+
+print('Finished Training')
+
+#모델 평가
+correct = 0
+total = 0
+with torch.no_grad():
+    for data in testloader:
+        images, labels = data
+        outputs = model(images)
+        _, predicted = torch.max(outputs.data, 1)
+        total += labels.size(0)
+        correct += (predicted == labels).sum().item()
+
+print(f'Accuracy of the network on the 10000 test images: {100 * correct / total:.2f}%')
+
+```
+
+- `nn.Conv2d`: 2차원 합성곱 층을 정의합니다.
+    - $\scriptsize\textsf{nn.Conv2d(in\_channels, out\_channels, kernel\_size, padding)은 입력 채널 수, 출력 채널 수, 커널 크기, 패딩을 지정}$
+- `nn.MaxPool2d`: 2차원 최대 풀링 층을 정의합니다.
+    - $\scriptsize\textsf{nn.MaxPool2d(kernel\_size, stride)은 풀링 크기와 스트라이드를 지정합니다.}$
+- `view`: 텐서의 크기를 변경합니다.
+    - $\scriptsize\textsf{x.view(-1, 64 * 8 * 8)은 특징 맵을 1차원 벡터로 변환합니다.}$
+- `nn.CrossEntropyLoss`: 다중 클래스 분류 문제에서 주로 사용되는 손실 함수입니다. 예측 값과 실제 값 사이의 교차 엔트로피 손실을 계산합니다.
+- `optim.SGD`: 확률적 경사 하강법(Stochastic Gradient Descent) 최적화 알고리즘을 정의합니다.
+    - $\scriptsize\textsf{lr은 학습률, momentum은 모멘텀 값을 지정합니다.}$
+- `optimizer.zero_grad()`: 이전 단계에서 계산된 기울기를 초기화합니다.
+- `loss.backward()`: 역전파를 통해 기울기를 계산합니다.
+- `optimizer.step()`: 계산된 기울기를 바탕으로 가중치를 업데이트합니다.
+- `torch.no_grad()`: 평가 단계에서는 기울기를 계산할 필요가 없으므로, 이를 비활성화하여 메모리 사용을 줄입니다.
+- `torch.max`: 텐서의 최대 값을 찾습니다.
+    - $\scriptsize\textsf{torch.max(outputs.data, 1)은 각 샘플에 대해 가장 높은 확률을 가진 클래스를 반환합니다.}$
+- `labels.size(0)`: 배치 크기를 반환합니다.
+- `(predicted == labels).sum().item()`: 예측 값과 실제 값이 일치하는 샘플의 수를 계산합니다.
