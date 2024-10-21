@@ -3,19 +3,27 @@
 
 제한사항
 0 <numer1, denom1, numer2, denom2 < 1,000
-입출력 예
-numer1	denom1	numer2	denom2	result
-1	2	3	4	[5, 4]
-9	2	1	3	[29, 6]
-입출력 예 설명
+
 입출력 예 #1
+1 / 2 + 3 / 4 = 5 / 4입니다. 따라서 [5, 4]를 return 합니다.  
 
-1 / 2 + 3 / 4 = 5 / 4입니다. 따라서 [5, 4]를 return 합니다.
 입출력 예 #2
-
 9 / 2 + 1 / 3 = 29 / 6입니다. 따라서 [29, 6]을 return 합니다.
 
 ---
+```python
+import math
+
 def solution(numer1, denom1, numer2, denom2):
     answer = []
+    denominator = int((denom1*denom2)/math.gcd(denom1, denom2))
+    numerator = int((numer1*denominator/denom1) + (numer2*denominator/denom2))
+    GCD = math.gcd(denominator, numerator)
+
+    #약분
+    answer+=[int(numerator/GCD), int(denominator/GCD)]
+
     return answer
+
+print(solution(5,8,7,12))
+```
