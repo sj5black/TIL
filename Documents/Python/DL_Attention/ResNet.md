@@ -78,3 +78,17 @@ class MultiHeadAttention(nn.Module):
         out = self.fc_out(out)
         return out
 ```
+
+# 자연어 처리 모델 (NLP)
+
+### 워드 임베딩(Word Embedding)
+ - 단어를 고정된 크기의 벡터로 변환하는 기법으로, 단어 간의 의미적 유사성을 반영
+
+1. **Word2Vec**
+- 단어를 벡터로 변환하는 두 가지 모델(CBOW와 Skip-gram)을 제공
+    - **CBOW (Continuous Bag of Words)**: 주변 단어(context)로 중심 단어(target)를 예측
+    - **Skip-gram**: 중심 단어(target)로 주변 단어(context)를 예측
+
+2. **GloVe (Global Vectors for Word Representation)**
+- 단어-단어 공기행렬(word-word co-occurrence matrix)을 사용, 단어 벡터를 학습
+- 전역적인 통계 정보를 활용하여 단어 간의 의미적 유사성 반영
