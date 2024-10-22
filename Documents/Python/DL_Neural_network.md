@@ -479,12 +479,12 @@ plt.legend()
 plt.show()
 ```
 
-- `nn.RNN`: 순환 신경망(RNN) 층을 정의
-    - $\scriptsize\textsf{nn.RNN(input\_size, hidden\_size, batch\_first)는 입력 크기, 은닉 상태 크기, 배치 차원을 첫 번째로 설정}$
+- `nn.RNN`: 순환 신경망(RNN) 층을 정의합니다.
+    - <small>nn.RNN(input_size, hidden_size, batch_first)는 입력 크기, 은닉 상태 크기, 배치 차원을 첫 번째로 설정</small>
 - `nn.Linear`: 선형 변환을 적용하는 완전 연결(fully connected) 레이어 정의
-    - $\scriptsize\textsf{nn.Linear(in\_features, out\_features)는 입력 특징의 수와 출력 특징의 수 지정}$
+    - <small>nn.Linear(in_features, out_features)는 입력 특징의 수와 출력 특징의 수 지정</small>
 - `nn.LSTM`: 장단기 메모리(LSTM) 층 정의
-    - $\scriptsize\textsf{nn.LSTM(input\_size, hidden\_size, batch\_first)는 입력 크기, 은닉 상태 크기, 배치 차원을 첫 번째로 설정}$
+    - <small>nn.LSTM(input_size, hidden_size, batch_first)는 입력 크기, 은닉 상태 크기, 배치 차원을 첫 번째로 설정</small>
 - `nn.MSELoss`: 평균 제곱 오차(MSE) 손실 함수 정의
 - `optim.Adam`: Adam 최적화 알고리즘 정의 `lr`은 학습률을 지정
 - `optimizer.zero_grad()`: 이전 단계에서 계산된 기울기를 초기화
