@@ -99,13 +99,13 @@ class MultiHeadAttention(nn.Module):
  - 순차적인 데이터를 처리하고 예측하는 모델링 기법
  - 주로 RNN, LSTM, GRU와 같은 순환 신경망을 사용
 
-<img src="./images/Sequence_Modeling.png" style="width:10%; height:auto;display: block; margin: 0 auto;">
+<img src="./images/Sequence_Modeling.png" style="width:20%; height:auto;display: block; margin: 0 auto;">
 
 &nbsp;
 
 ### Transformer
 
-<img src="./images/Trans_BERT.png" style="width:40%; height:auto;display: block; margin: 0 auto;">
+<img src="./images/Trans_BERT.png" style="width:50%; height:auto;display: block; margin: 0 auto;">
 
 **인코더 (Encoder)**
 - 입력 시퀀스를 처리하여 인코딩된 표현을 생성
