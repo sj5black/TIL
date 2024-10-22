@@ -352,3 +352,144 @@ print(f'Accuracy of the network on the 10000 test images: {100 * correct / total
     - $\scriptsize\textsf{torch.max(outputs.data, 1)은 각 샘플에 대해 가장 높은 확률을 가진 클래스를 반환}$
 - `labels.size(0)`: 배치 크기를 반환
 - `(predicted == labels).sum().item()`: 예측 값과 실제 값이 일치하는 샘플의 수를 계산
+---
+# 합성곱 신경망 (RNN)
+ - 계열 데이터나 순차적인 데이터를 처리하기 위해 설계된 신경망
+ - 이전 시간 단계의 정보를 현재 시간 단계로 전달해 시퀀스 데이터의 패턴 학습
+ - 시퀀스의 각 시간 단계에서 동일한 가중치를 공유하여, 시퀀스의 패턴을 학습
+
+ <img src="./images/RNN.png" style="width:60%; height:auto;display: block; margin: 0 auto;">
+
+1. **데이터 전처리**:
+    - 시계열 데이터를 적절한 형태로 변환하고, 정규화(normalization)
+    - 입력 시퀀스와 출력 시퀀스를 정의
+2. **모델 구축**:
+    - RNN, LSTM, GRU 등의 모델을 정의
+    - 입력 크기, 은닉 상태 크기, 출력 크기 등을 설정
+3. **모델 학습**:
+    - 손실 함수와 최적화 알고리즘을 정의
+    - 순전파와 역전파를 통해 모델을 학습
+4. **모델 평가**:
+    - 테스트 데이터를 사용하여 모델의 성능을 평가
+
+### LSTM & GRU
+ - RNN 의 장기 의존성 문제(long-term dependency problem)를 해결하기 위해 개발된 장치
+
+### **LSTM(Long Short-Term Memory)**
+
+- 셀 상태(cell state)와 게이트(gate) 구조를 도입, 장기 의존성을 효과적으로 학습가능
+- 입력 게이트(input gate), 출력 게이트(output gate), 망각 게이트(forget gate)를 사용하여 정보를 조절
+
+### **GRU (Gated Recurrent Unit)**
+
+- LSTM의 변형으로, 셀 상태 대신 은닉 상태(hidden state)만을 사용하여 구조를 단순화
+- 업데이트 게이트(update gate)와 리셋 게이트(reset gate)를 사용하여 정보 조절
+
+<img src="./images/LSTM_GRU.png" style="width:70%; height:auto;display: block; margin: 0 auto;">
+
+```python
+import torch
+import torch.nn as nn
+import torch.optim as optim
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Sine 파형 데이터 생성
+def create_sine_wave_data(seq_length, num_samples):
+    X = []
+    y = []
+    for _ in range(num_samples):
+        start = np.random.rand()
+        x = np.linspace(start, start + 2 * np.pi, seq_length)
+        X.append(np.sin(x))
+        y.append(np.sin(x + 0.1))
+    return np.array(X), np.array(y)
+
+seq_length = 50
+num_samples = 1000
+X, y = create_sine_wave_data(seq_length, num_samples)
+
+# 데이터셋을 PyTorch 텐서로 변환
+X = torch.tensor(X, dtype=torch.float32).unsqueeze(-1)
+y = torch.tensor(y, dtype=torch.float32).unsqueeze(-1)
+
+# RNN 모델 정의
+class SimpleRNN(nn.Module):
+    def __init__(self, input_size, hidden_size, output_size):
+        super(SimpleRNN, self).__init__()
+        self.rnn = nn.RNN(input_size, hidden_size, batch_first=True)
+        self.fc = nn.Linear(hidden_size, output_size)
+
+    def forward(self, x):
+        h0 = torch.zeros(1, x.size(0), hidden_size)  # 초기 은닉 상태
+        out, _ = self.rnn(x, h0)
+        out = self.fc(out[:, -1, :])  # 마지막 시간 단계의 출력
+        return out
+
+input_size = 1
+hidden_size = 32
+output_size = 1
+model = SimpleRNN(input_size, hidden_size, output_size)
+
+# LSTM 모델 정의
+class SimpleLSTM(nn.Module):
+    def __init__(self, input_size, hidden_size, output_size):
+        super(SimpleLSTM, self).__init__()
+        self.lstm = nn.LSTM(input_size, hidden_size, batch_first=True)
+        self.fc = nn.Linear(hidden_size, output_size)
+
+    def forward(self, x):
+        h0 = torch.zeros(1, x.size(0), hidden_size)  # 초기 은닉 상태
+        c0 = torch.zeros(1, x.size(0), hidden_size)  # 초기 셀 상태
+        out, _ = self.lstm(x, (h0, c0))
+        out = self.fc(out[:, -1, :])  # 마지막 시간 단계의 출력
+        return out
+
+model = SimpleLSTM(input_size, hidden_size, output_size)
+
+# 모델 학습
+# 손실 함수와 최적화 알고리즘 정의
+criterion = nn.MSELoss()
+optimizer = optim.Adam(model.parameters(), lr=0.01)
+
+# 모델 학습
+num_epochs = 100
+for epoch in range(num_epochs):
+    outputs = model(X)
+    optimizer.zero_grad()
+    loss = criterion(outputs, y)
+    loss.backward()
+    optimizer.step()
+
+    if (epoch + 1) % 10 == 0:
+        print(f'Epoch [{epoch + 1}/{num_epochs}], Loss: {loss.item():.4f}')
+
+print('Finished Training')
+
+# 모델 평가
+model.eval()
+with torch.no_grad():
+    predicted = model(X).detach().numpy()
+
+# 시각화
+plt.figure(figsize=(10, 5))
+plt.plot(y.numpy().flatten(), label='True')
+plt.plot(predicted.flatten(), label='Predicted')
+plt.legend()
+plt.show()
+```
+
+- `nn.RNN`: 순환 신경망(RNN) 층을 정의
+    - $\scriptsize\textsf{nn.RNN(input\_size, hidden\_size, batch\_first)는 입력 크기, 은닉 상태 크기, 배치 차원을 첫 번째로 설정}$
+- `nn.Linear`: 선형 변환을 적용하는 완전 연결(fully connected) 레이어 정의
+    - $\scriptsize\textsf{nn.Linear(in\_features, out\_features)는 입력 특징의 수와 출력 특징의 수 지정}$
+- `nn.LSTM`: 장단기 메모리(LSTM) 층 정의
+    - $\scriptsize\textsf{nn.LSTM(input\_size, hidden\_size, batch\_first)는 입력 크기, 은닉 상태 크기, 배치 차원을 첫 번째로 설정}$
+- `nn.MSELoss`: 평균 제곱 오차(MSE) 손실 함수 정의
+- `optim.Adam`: Adam 최적화 알고리즘 정의 `lr`은 학습률을 지정
+- `optimizer.zero_grad()`: 이전 단계에서 계산된 기울기를 초기화
+- `loss.backward()`: 역전파를 통해 기울기를 계산
+- `optimizer.step()`: 계산된 기울기를 바탕으로 가중치를 업데이트
+- `model.eval()`: 모델을 평가 모드로 전환
+- `torch.no_grad()`: 평가 단계에서는 기울기를 계산할 필요가 없으므로, 이를 비활성화하여 메모리 사용 절약
+- `detach()`: 텐서를 계산 그래프에서 분리
