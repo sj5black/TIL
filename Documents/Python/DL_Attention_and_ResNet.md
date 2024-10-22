@@ -185,6 +185,34 @@ class MultiHeadAttention(nn.Module):
 
 &nbsp;
 
-### Transformer와 BERT
+### Transformer
 
 <img src="./images/Trans_BERT.png" style="width:60%; height:auto;display: block; margin: 0 auto;">
+
+**인코더 (Encoder)**
+- 입력 시퀀스를 처리하여 인코딩된 표현을 생성
+- 각 인코더 층은 셀프 어텐션(Self-Attention)과 피드포워드 신경망(Feed-Forward Neural Network)으로 구성
+
+**디코더 (Decoder)**
+
+- 인코딩된 표현을 바탕으로 출력 시퀀스를 생성
+- 각 디코더 층은 셀프 어텐션, 인코더-디코더 어텐션, 피드포워드 신경망으로 구성
+
+**어텐션 메커니즘 (Attention Mechanism)**
+
+- 어텐션 메커니즘은 입력 시퀀스의 각 위치에 가중치를 부여하여, 중요한 정보를 강조
+- 셀프 어텐션은 입력 시퀀스 내의 단어 간의 관계를 학습
+
+### BERT
+ - Transformer 인코더를 기반으로 한 사전 학습된 언어 모델
+ - 양방향으로 문맥을 이해할 수 있어, 다양한 자연어 처리 작업에서 뛰어난 성능
+
+ 1. **사전 학습(Pre-training)**
+
+- 대규모 텍스트 코퍼스를 사용하여 사전 학습
+- 마스킹 언어 모델(Masked Language Model)과 다음 문장 예측(Next Sentence Prediction) 작업을 통해 학습
+
+ 2. **파인튜닝 (Fine-tuning)**
+
+- 사전 학습된 BERT 모델을 특정 작업에 맞게 파인튜닝
+- 텍스트 분류, 질의 응답, 텍스트 생성 등 다양한 자연어 처리 작업에 적용
