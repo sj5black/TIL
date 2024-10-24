@@ -134,3 +134,139 @@ class MultiHeadAttention(nn.Module):
 
 - 사전 학습된 BERT 모델을 특정 작업에 맞게 파인튜닝
 - 텍스트 분류, 질의 응답, 텍스트 생성 등 다양한 자연어 처리 작업에 적용
+
+---
+# ResNet (Residual Network)
+- 잔차 학습(Residual Learning)을 기반으로 한 딥러닝 신경망 구조로, 딥 뉴럴 네트워크에서 발생하는 기울기 소실(vanishing gradient) 문제를 해결하기 위해 제안된 아키텍처
+- 잔차 학습 : 각 층에서 새로운 출력을 계산하면서, 이전 층의 입력을 그대로 다음 층에 더해 학습하는 방식. (기울기 소실 문제 해결)
+- 이미지 처리, 자연어 처리 등에 효과적
+
+$$ output=F(x)+x $$
+
+```python
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+class Block(nn.Module):
+    def __init__(self, in_ch, out_ch, stride=1):
+        super(Block, self).__init__()
+        # 첫 번째 컨볼루션 레이어
+        self.conv1 = nn.Conv2d(in_ch, out_ch, kernel_size=3, stride=stride, padding=1, bias=False)
+        self.bn1 = nn.BatchNorm2d(out_ch)  # 배치 정규화
+        # 두 번째 컨볼루션 레이어
+        self.conv2 = nn.Conv2d(out_ch, out_ch, kernel_size=3, stride=1, padding=1, bias=False)
+        self.bn2 = nn.BatchNorm2d(out_ch)  # 배치 정규화
+
+        # 입력과 출력의 차원이 다를 경우 shortcut 경로 정의
+        self.skip_connection = nn.Sequential()
+        if stride != 1 or in_ch != out_ch:
+            self.skip_connection = nn.Sequential(
+                nn.Conv2d(in_ch, out_ch, kernel_size=1, stride=stride, bias=False),  # 차원 맞추기 위한 1x1 컨볼루션
+                nn.BatchNorm2d(out_ch)  # 배치 정규화
+            )
+        
+    def forward(self, x):
+        # 첫 번째 컨볼루션 + ReLU 활성화 함수
+        output = F.relu(self.bn1(self.conv1(x)))
+        # 두 번째 컨볼루션 후 배치 정규화
+        output = self.bn2(self.conv2(output))
+        # shortcut 경로 출력과 현재 블록의 출력 더하기
+        output += self.skip_connection(x)
+        # 최종 ReLU 활성화 함수 적용
+        output = F.relu(output)
+        return output
+
+# ResNet 모델 정의
+class CustomResNet(nn.Module):
+    def __init__(self, block, layers, num_classes=10):
+        super(CustomResNet, self).__init__()
+        self.initial_channels = 64  # 첫 번째 레이어의 입력 채널 수 정의
+        # 첫 번째 컨볼루션 레이어
+        self.conv1 = nn.Conv2d(3, 64, kernel_size=3, stride=1, padding=1, bias=False)
+        self.bn1 = nn.BatchNorm2d(64)  # 배치 정규화
+        # ResNet의 각 레이어 생성
+        self.layer1 = self._create_layer(block, 64, layers[0], stride=1)
+        self.layer2 = self._create_layer(block, 128, layers[1], stride=2)
+        self.layer3 = self._create_layer(block, 256, layers[2], stride=2)
+        self.layer4 = self._create_layer(block, 512, layers[3], stride=2)
+        # 평균 풀링 레이어
+        self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
+        # 최종 완전 연결 레이어
+        self.fc = nn.Linear(512, num_classes)
+        
+    # ResNet의 각 레이어를 생성하는 함수
+    def _create_layer(self, block, out_ch, num_layers, stride):
+        layer_list = []
+        # 첫 번째 블록은 stride를 받을 수 있음
+        layer_list.append(block(self.initial_channels, out_ch, stride))
+        self.initial_channels = out_ch  # 다음 블록을 위해 채널 수 업데이트
+        # 나머지 블록들은 기본 stride를 사용
+        for _ in range(1, num_layers):
+            layer_list.append(block(out_ch, out_ch))
+        return nn.Sequential(*layer_list)
+    
+    def forward(self, x):
+        # 첫 번째 컨볼루션 + ReLU 활성화 함수
+        x = F.relu(self.bn1(self.conv1(x)))
+        # 각 레이어를 순차적으로 통과
+        x = self.layer1(x)
+        x = self.layer2(x)
+        x = self.layer3(x)
+        x = self.layer4(x)
+        # 평균 풀링 및 텐서의 차원 축소
+        x = self.avgpool(x)
+        x = torch.flatten(x, 1)
+        # 최종 완전 연결 레이어를 통해 클래스별 예측값 출력
+        x = self.fc(x)
+        return x
+
+# Custom ResNet-18 모델 생성 (각 레이어의 블록 수는 2개씩)
+model = CustomResNet(Block, [2, 2, 2, 2], num_classes=10)
+```
+
+### 이미지 처리 모델 (주요 CNN 아키텍쳐)
+    
+☑️ **ResNet (Residual Network)**
+- 매우 깊은 신경망을 학습할 수 있도록 설계된 아키텍처
+- 잔차 연결(Residual Connection)을 도입하여, 기울기 소실 문제를 해결
+- ResNet-50, ResNet-101, ResNet-152 등의 변형
+    
+☑️ **VGG**
+- 작은 3x3 필터를 사용하여 깊이를 증가시킨 아키텍처
+- 단순하고 규칙적인 구조로 인해, 다양한 변형이 가능
+- VGG16, VGG19 등
+    
+☑️ **Inception**
+- 다양한 크기의 필터를 병렬로 적용하여, 여러 수준의 특징을 추출
+- Inception 모듈을 사용하여, 네트워크의 깊이와 너비를 동시에 확장
+- GoogLeNet(Inception v1), Inception v2, Inception v3 등
+    
+☑️ **객체 탐지YOLO(You Only Look Once)**
+- 이미지에서 객체의 위치와 클래스를 동시에 예측
+- 이미지 전체를 한 번에 처리하여, 빠르고 정확한 객체 탐지를 수행
+
+### **YOLO의 개념**
+- 이미지를 SxS 그리드로 나누고, 각 그리드 셀에서 객체의 존재 여부를 예측
+- 각 그리드 셀은 B개의 바운딩 박스와 C개의 클래스 확률을 출력
+
+### **YOLO의 동작 원리**
+- 입력 이미지를 CNN을 통해 특징 맵으로 변환
+- 특징 맵을 SxS 그리드로 나누고, 각 그리드 셀에서 바운딩 박스와 클래스 확률 예측
+- 예측된 바운딩 박스와 클래스 확률을 바탕으로, 객체의 위치와 클래스를 결정
+
+### **이미지 세그멘테이션 기법과 응용**
+- 이미지의 각 픽셀을 클래스 레이블로 분류하는 작업
+- 주로 시맨틱 세그멘테이션과 인스턴스 세그멘테이션으로 분류
+시맨틱 세그멘테이션 (Semantic Segmentation)
+$\scriptsize\textsf{이미지의 각 픽셀을 클래스 레이블로 분류}$
+인스턴스 세그멘테이션 (Instance Segmentation)
+$\scriptsize\textsf{시맨틱 세그멘테이션과 달리, 같은 클래스 내에서도 개별 객체를 구분}$
+
+<img src="./images/Image_seg.png" style="width:60%; height:auto;display: block; margin: 0 auto;">
+
+### 주요 세그멘테이션 모델
+
+- **FCN (Fully Convolutional Network)**: 모든 레이어를 합성곱 레이어로 구성하여, 픽셀 단위의 예측을 수행
+- **U-Net**: U자형 구조를 가지며, 인코더-디코더 아키텍처를 사용하여 세그멘테이션을 수행
+- **Mask R-CNN**: 객체 탐지와 인스턴스 세그멘테이션을 동시에 수행하는 모델
