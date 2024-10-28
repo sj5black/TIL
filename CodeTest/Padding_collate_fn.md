@@ -1,5 +1,5 @@
-Padding : 자연어로 이루어진 리스트에서 텐서 변환을 위해 빈 칸을 0이나 <PAD> 로 채워주는 처리
-Collate funciton : DataLoader에서 배치 데이터를 생성할 때 각 샘플을 결합하는 방법을 정의하는 함수
+ - Padding : 자연어로 이루어진 리스트에서 텐서 변환을 위해 빈 칸을 0이나 <PAD> 로 채워주는 처리
+ - Collate funciton : DataLoader에서 배치 데이터를 생성할 때 각 샘플을 결합하는 방법을 정의하는 함수
 ```python
 from torch.utils.data import DataLoader, Dataset
 
