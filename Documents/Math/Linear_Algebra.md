@@ -5,7 +5,7 @@
 
 (이미 소실된 기저벡터는 역행렬만을 곱해서 복원할 수 없으므로, det(A) 가 0인 경우 역행렬은 존재 X)
 
-<img src="./images/determinant.png" style="width:70%; height:auto;display: block; margin: 0 auto;">
+<img src="./images/determinant.png" style="width:50%; height:auto;display: block; margin: 0 auto;">
 
 출처 : https://blog.naver.com/songsite123/223320410409
  
@@ -13,7 +13,7 @@
 
 ---
 ### **두 basis 가 선형 종속일 때**
-<img src="./images/Linear_depen.png" style="width:70%; height:auto;display: block; margin: 0 auto;">
+<img src="./images/Linear_depen.png" style="width:50%; height:auto;display: block; margin: 0 auto;">
 
 ### Reduced Row-echolon form (RRef) 특징
 
