@@ -10,7 +10,9 @@
 출처 : https://blog.naver.com/songsite123/223320410409
  
 위 이미지는 단위 벡터 <1,0>, <0,1> 을 가진 좌표계가 두 백터 v=<1,1> 와 w=<2,-1> 을 기저 벡터(basis vector) 로 하는 선형 변환된 것을 의미한다.
-**두 basis 가 선형 종속일 때**
+
+---
+### **두 basis 가 선형 종속일 때**
 <img src="./images/Linear_depen.png" style="width:70%; height:auto;display: block; margin: 0 auto;">
 
 ### Reduced Row-echolon form (RRef) 특징
