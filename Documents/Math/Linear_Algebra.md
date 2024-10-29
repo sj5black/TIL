@@ -9,6 +9,7 @@
 
 출처 : https://blog.naver.com/songsite123/223320410409
  
+위 이미지는 단위 벡터 <1,0>, <0,1> 을 가진 좌표계가 두 백터 v=<1,1> 와 w=<2,-1> 을 기저 벡터(basis vector) 로 하는 선형 변환된 것을 의미한다.
 **두 basis 가 선형 종속일 때**
 <img src="./images/Linear_depen.png" style="width:70%; height:auto;display: block; margin: 0 auto;">
 
@@ -42,27 +43,11 @@
 >> 어떤 행렬의 RREF 가 대각 행렬로 변환될 수 있다는 것은 곧 행이나 열의 손실 없이 dimention이 유지된다는 것을 뜻한다
 
 출처 : https://blog.naver.com/symj2001/223425862868
-
- 
-전치행렬(Transpose Matrix) 이란?
-
-전치 행렬(Transpose Matrix)은 주어진 행렬의 행과 열을 서로 바꾼 행렬을 말합니다. 즉, 주어진 행렬 ...
-
-blog.naver.com
- 
-
  
 
 ### 선형 변환(Linear Transformation)
 
 https://blog.naver.com/songsite123/223319658381 
-
- 
-선형 변환(Linear transformation)
-
-오늘 포스팅의 이미지/GIF는 모두 3Blue1Brown의 Essence of linear algebra 에서 가져왔습니다. 시...
-
-blog.naver.com
  
 
 ### 고유값과 고유 벡터 (eigen-value, eigen-vector)
