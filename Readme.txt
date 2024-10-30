@@ -1,11 +1,10 @@
 # TIL
- - Documents
-  1. Python
-  2. Math
-  3. Linux
-  4. Network
-     
- - Algorithm code
+
+ - Python
+ - Math
+ - Linux
+ - Network
+ - Several_Codes
 
 
 <img src="./images/Ridge_func.png" style="width:40%; height:auto;display: block; margin: 0 auto;">
