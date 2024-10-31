@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEDDY의 농장</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 0.5rem;
+            text-align: center;
+            position: fixed;
+            width: 100%;
+            z-index: 100;
+        }
+
+        nav ul {
+            list-style-type: none;
+        }
+
+        nav ul li {
+            display: inline;
+            margin: 0 1rem;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        #game-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #game-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        #chat-container {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 300px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 5px;
+            padding: 10px;
+            z-index: 100;
+        }
+
+        #chat-messages {
+            height: 200px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            padding: 5px;
+            background-color: white;
+            border: 1px solid #ccc;
+        }
+
+        #chat-input {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        #customization-menu {
+            position: fixed;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 5px;
+            z-index: 100;
+        }
+
+        .color-option {
+            width: 30px;
+            height: 30px;
+            margin: 5px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        #player-name-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            z-index: 200;
+        }
+
+        .item {
+            width: 20px;
+            height: 20px;
+            position: absolute;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="player-name-container">
+        <h3>이름을 입력하세요</h3>
+        <input type="text" id="player-name" placeholder="닉네임">
+        <button id="start-game">게임 시작</button>
+    </div>
+
+    <header>
+        <h1>Teddy's Farm</h1>
+        <nav>
+            <ul>
+                <li><a href="#" id="toggle-customization">캐릭터 커스터마이징</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div id="game-container">
+        <canvas id="game-canvas"></canvas>
+    </div>
+
+    <div id="chat-container">
+        <div id="chat-messages"></div>
+        <input type="text" id="chat-input" placeholder="채팅 메시지 입력...">
+    </div>
+
+    <div id="customization-menu" style="display: none;">
+        <h3>캐릭터 색상 선택</h3>
+        <div class="color-option" style="background-color: #4A90E2;"></div>
+        <div class="color-option" style="background-color: #FF6B6B;"></div>
+        <div class="color-option" style="background-color: #50E3C2;"></div>
+        <div class="color-option" style="background-color: #F8E71C;"></div>
+    </div>
+
+    <script>
+        class Character {
+            constructor(x, y, name, color = '#4A90E2') {
+                this.x = x;
+                this.y = y;
+                this.size = 30;
+                this.speed = 1; // 이동속도 감소
+                this.color = color;
+                this.name = name;
+                this.items = [];
+            }
+
+            draw(ctx, cameraX = 0, cameraY = 0) {
+                // 캐릭터 본체
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x - cameraX, this.y - cameraY, this.size / 2, 0, Math.PI * 2);
+                ctx.fill();
+
+                // 얼굴
+                ctx.fillStyle = '#FFFFFF';
+                ctx.beginPath();
+                ctx.arc(this.x - cameraX + 5, this.y - cameraY - 5, 5, 0, Math.PI * 2);
+                ctx.fill();
+
+                // 이름표
+                ctx.fillStyle = '#000000';
+                ctx.font = '14px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText(this.name, this.x - cameraX, this.y - cameraY - 25);
+            }
+
+            move(direction, walls) {
+                let newX = this.x;
+                let newY = this.y;
+
+                switch (direction) {
+                    case 'up':
+                        newY -= this.speed;
+                        break;
+                    case 'down':
+                        newY += this.speed;
+                        break;
+                    case 'left':
+                        newX -= this.speed;
+                        break;
+                    case 'right':
+                        newX += this.speed;
+                        break;
+                }
+
+                // 벽과의 충돌 검사
+                if (!this.checkCollision(newX, newY, walls)) {
+                    this.x = newX;
+                    this.y = newY;
+                }
+            }
+
+            checkCollision(newX, newY, walls) {
+                for (let wall of walls) {
+                    if (newX + this.size / 2 > wall.x &&
+                        newX - this.size / 2 < wall.x + wall.width &&
+                        newY + this.size / 2 > wall.y &&
+                        newY - this.size / 2 < wall.y + wall.height) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+
+        class Item {
+            constructor(x, y, type) {
+                this.x = x;
+                this.y = y;
+                this.type = type;
+                this.size = 20;
+            }
+
+            draw(ctx) {
+                ctx.fillStyle = this.type === 'speed' ? '#FFD700' : '#FF69B4';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size / 2, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        class Game {
+            constructor() {
+                this.canvas = document.getElementById('game-canvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.resizeCanvas();
+                this.character = null;
+                this.otherPlayers = new Map();
+                this.keys = {};
+                this.items = [];
+                this.messages = [];
+                
+                this.cameraX = 0;
+                this.cameraY = 0;
+
+                // 맵 요소들 - 맵 크기에 맞게 조정
+                this.walls = [
+                    {x: 100, y: 100, width: 300, height: 20},
+                    {x: 100, y: 100, width: 20, height: 300},
+                    {x: 800, y: 400, width: 250, height: 20},
+                    {x: 400, y: 200, width: 20, height: 250}
+                ];
+
+                this.setupWebSocket();
+                this.setupEventListeners();
+                this.spawnItems();
+
+                window.addEventListener('resize', () => {
+                    this.resizeCanvas();
+                });
+            }
+
+            resizeCanvas() {
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+            }
+
+            setupWebSocket() {
+                // WebSocket 연결 설정 (실제 서버 주소로 변경 필요)
+                this.ws = new WebSocket('ws://localhost:8080');
+                
+                this.ws.onmessage = (event) => {
+                    const data = JSON.parse(event.data);
+                    
+                    switch (data.type) {
+                        case 'playerUpdate':
+                            if (data.id !== this.character.id) {
+                                this.otherPlayers.set(data.id, new Character(
+                                    data.x,
+                                    data.y,
+                                    data.name,
+                                    data.color
+                                ));
+                            }
+                            break;
+                        case 'chat':
+                            this.addChatMessage(data.name, data.message);
+                            break;
+                    }
+                };
+            }
+
+            setupEventListeners() {
+                window.addEventListener('keydown', (e) => {
+                    this.keys[e.key] = true;
+                    if (e.key === 'Enter') {
+                        const chatInput = document.getElementById('chat-input');
+                        if (document.activeElement !== chatInput) {
+                            chatInput.focus();
+                        }
+                    }
+                });
+
+                window.addEventListener('keyup', (e) => {
+                    this.keys[e.key] = false;
+                });
+
+                document.getElementById('chat-input').addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        const chatInput = e.target;
+                        const message = chatInput.value;
+                        if (message.trim()) {
+                            this.sendChatMessage(message);
+                            chatInput.value = '';
+                        }
+                    }
+                });
+
+                // "게임 시작" 버튼 클릭 시 이벤트
+                document.getElementById('start-game').addEventListener('click', () => {
+                    const playerName = document.getElementById('player-name').value.trim();
+                    if (playerName) {
+                        this.character = new Character(
+                            Math.random() * this.canvas.width,
+                            Math.random() * this.canvas.height,
+                            playerName,
+                            '#4A90E2' // 기본 색상
+                        );
+                        document.getElementById('player-name-container').style.display = 'none';
+                        this.startGame();
+                    }
+                });
+
+                document.getElementById('toggle-customization').addEventListener('click', () => {
+                    const menu = document.getElementById('customization-menu');
+                    menu.style.display = menu.style.display === 'none' || menu.style.display === '' ? 'block' : 'none';
+                });
+
+                document.querySelectorAll('.color-option').forEach(option => {
+                    option.addEventListener('click', () => {
+                        if (this.character) {
+                            this.character.color = option.style.backgroundColor;
+                        }
+                    });
+                });
+            }
+
+            spawnItems() {
+                // 아이템 생성 로직
+                this.items.push(new Item(Math.random() * this.canvas.width, Math.random() * this.canvas.height, 'speed'));
+                this.items.push(new Item(Math.random() * this.canvas.width, Math.random() * this.canvas.height, 'other'));
+            }
+
+            sendChatMessage(message) {
+                const data = {
+                    type: 'chat',
+                    name: this.character.name,
+                    message: message
+                };
+                this.ws.send(JSON.stringify(data));
+            }
+
+            addChatMessage(name, message) {
+                this.messages.push(`${name}: ${message}`);
+                const chatMessages = document.getElementById('chat-messages');
+                chatMessages.innerHTML = this.messages.join('<br>');
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            startGame() {
+                this.update();
+            }
+            
+            handleMovement() {
+                if (this.keys['ArrowUp'] || this.keys['w']) this.character.move('up', this.walls);
+                if (this.keys['ArrowDown'] || this.keys['s']) this.character.move('down', this.walls);
+                if (this.keys['ArrowLeft'] || this.keys['a']) this.character.move('left', this.walls);
+                if (this.keys['ArrowRight'] || this.keys['d']) this.character.move('right', this.walls);
+            }
+
+            update() {
+                // 캐릭터 이동
+                this.handleMovement();
+
+                if (this.keys['ArrowUp'] || this.keys['w']) {
+                    this.character.move('up', this.walls);
+                }
+                if (this.keys['ArrowDown'] || this.keys['s']) {
+                    this.character.move('down', this.walls);
+                }
+                if (this.keys['ArrowLeft'] || this.keys['a']) {
+                    this.character.move('left', this.walls);
+                }
+                if (this.keys['ArrowRight'] || this.keys['d']) {
+                    this.character.move('right', this.walls);
+                }
+            
+                // 카메라 위치 업데이트
+                this.cameraX = this.character.x - this.canvas.width / 4;
+                this.cameraY = this.character.y - this.canvas.height / 4;
+            
+                // 경계 충돌 검사
+                this.character.x = Math.max(this.character.size / 2, Math.min(this.canvas.width - this.character.size / 2, this.character.x));
+                this.character.y = Math.max(this.character.size / 2, Math.min(this.canvas.height - this.character.size / 2, this.character.y));
+            
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+                // 벽 그리기
+                this.walls.forEach(wall => {
+                    this.ctx.fillStyle = '#666666'; // 벽 색상 변경 가능
+                    this.ctx.fillRect(wall.x - this.cameraX, wall.y - this.cameraY, wall.width, wall.height);
+                });
+            
+                // 아이템 그리기
+                this.items.forEach(item => {
+                    item.draw(this.ctx);
+                });
+            
+                // 캐릭터 그리기
+                if (this.character) {
+                    this.character.draw(this.ctx, this.cameraX, this.cameraY);
+                }
+            
+                // 다른 플레이어 그리기
+                this.otherPlayers.forEach(player => {
+                    player.draw(this.ctx, this.cameraX, this.cameraY);
+                });
+            
+                requestAnimationFrame(() => this.update());
+            }
+            
+        }
+
+        const game = new Game();
+    </script>
+</body>
+</html>
