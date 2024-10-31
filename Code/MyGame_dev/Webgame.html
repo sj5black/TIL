@@ -244,14 +244,29 @@
                 this.canvas = document.getElementById('game-canvas');
                 this.ctx = this.canvas.getContext('2d');
                 this.resizeCanvas();
-                this.character = null;
+
+                // 캐릭터 초기화
+                const centerX = this.canvas.width / 2;
+                const centerY = this.canvas.height / 2;
+                this.character = new Character(centerX, centerY, 'Player1', '#4A90E2');
+
+                // 추가적인 게임 요소 초기화
                 this.otherPlayers = new Map();
                 this.keys = {};
                 this.items = [];
                 this.messages = [];
                 
-                this.cameraX = 0;
-                this.cameraY = 0;
+                this.setupWebSocket();
+                this.setupEventListeners();
+                this.spawnItems();
+                
+                window.addEventListener('resize', () => {
+                    this.resizeCanvas();
+                });
+
+                // 카메라 초기 위치 설정
+                this.cameraX = centerX - this.canvas.width / 2;
+                this.cameraY = centerY - this.canvas.height / 2;
 
                 // 맵 요소들 - 맵 크기에 맞게 조정
                 this.walls = [
@@ -261,13 +276,12 @@
                     {x: 400, y: 200, width: 20, height: 250}
                 ];
 
-                this.setupWebSocket();
+                // 키 입력 이벤트 설정
                 this.setupEventListeners();
-                this.spawnItems();
 
-                window.addEventListener('resize', () => {
-                    this.resizeCanvas();
-                });
+                // 게임 시작
+                this.update();
+                
             }
 
             resizeCanvas() {
@@ -378,6 +392,19 @@
             }
 
             startGame() {
+                const centerX = this.canvas.width / 2;
+                const centerY = this.canvas.height / 2;
+                    
+                this.character = new Character(
+                    centerX,
+                    centerY,
+                    playerName,
+                    '#4A90E2' // 기본 색상
+                );
+                    
+                this.cameraX = centerX - this.canvas.width / 4;
+                this.cameraY = centerY - this.canvas.height / 4;
+                    
                 this.update();
             }
             
@@ -405,9 +432,23 @@
                     this.character.move('right', this.walls);
                 }
             
-                // 카메라 위치 업데이트
-                this.cameraX = this.character.x - this.canvas.width / 4;
-                this.cameraY = this.character.y - this.canvas.height / 4;
+                // 카메라 위치 업데이트 (25% ~ 75% 구간을 벗어날 경우에만)
+                const cameraLimitX1 = this.canvas.width * 0.25;
+                const cameraLimitX2 = this.canvas.width * 0.75;
+                const cameraLimitY1 = this.canvas.height * 0.25;
+                const cameraLimitY2 = this.canvas.height * 0.75;
+                    
+                if (this.character.x < cameraLimitX1) {
+                    this.cameraX = this.character.x - cameraLimitX1;
+                } else if (this.character.x > cameraLimitX2) {
+                    this.cameraX = this.character.x - cameraLimitX2;
+                }
+            
+                if (this.character.y < cameraLimitY1) {
+                    this.cameraY = this.character.y - cameraLimitY1;
+                } else if (this.character.y > cameraLimitY2) {
+                    this.cameraY = this.character.y - cameraLimitY2;
+                }
             
                 // 경계 충돌 검사
                 this.character.x = Math.max(this.character.size / 2, Math.min(this.canvas.width - this.character.size / 2, this.character.x));
