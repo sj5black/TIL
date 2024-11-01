@@ -67,7 +67,8 @@ for item in my_iter:
 
 ⭐ **`yield`의 동작 원리**
 
-    return 과 다르게 yield 를 통해 반환된 함수는 다음 호출 시 알고리즘이 처음부터 시작하지 않고, yield를 통해 마지막으로 반환된 시점부터 다시 시작한다.  
+    return 과 다르게 yield 를 통해 반환된 함수는 다음 호출 시 알고리즘이 처음부터 시작하지 않고,  
+    yield를 통해 마지막으로 반환된 시점부터 다시 시작한다.  
     즉, return이 함수의 종료(end)를 의미한다면, yield는 함수의 일시정지(pause)와 같은 느낌이다.
 
 ```py
@@ -80,4 +81,57 @@ def fibonacci(n):
 # 피보나치 수열 생성
 for num in fibonacci(10):
     print(num)
+```
+
+### Decorator
+ - 함수나 메서드를 변경하지 않고, 추가적인 기능을 쉽게 추가할 수 있는 방법
+ - 함수를 다른 함수로 감싸서, 원래 함수에 새로운 기능을 덧붙일 때 사용
+
+```py
+# 데코레이터 사용 예시
+def log_decorator(func):
+    def wrapper(*args, **kwargs):
+        print(f"실행 전: {func.__name__}")
+        result = func(*args, **kwargs)
+        print(f"실행 후: {func.__name__}")
+        return result
+    return wrapper
+
+@log_decorator
+def say_hello(name):
+    print(f"안녕하세요, {name}님!")
+
+# 함수 호출
+say_hello("Alice")
+```
+- 데코레이터 체이닝 시, 안쪽에서부터 밖으로 차례대로 적용
+```py
+@decorator1
+@decorator2
+def my_function():
+    pass
+## 2번 적용 후 1번 적용
+```
+
+### with 구문 (Context Manager)
+ - 리소스를 획득하고 사용한 뒤, 자동으로 정리해주는 메커니즘
+ - 파일을 열고 나서 자동으로 닫거나, 데이터베이스 연결을 관리하는 데 사용
+ - `__enter__()`와 `__exit__()` 메서드를 사용
+ - `__enter__()` : `with` 블록에 진입할 때 호출. 필요한 리소스를 준비하거나, 설정 작업을 수행
+- `__exit__()` : `with` 블록이 끝날 때 호출.
+리소스를 정리하고 예외 처리를 수행합니다.
+
+```py
+# 컨텍스트 매니저 사용 예시
+class MyContextManager:
+    def __enter__(self):
+        print("리소스를 획득합니다.")
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        print("리소스를 정리합니다.")
+
+# 컨텍스트 매니저 사용
+with MyContextManager():
+    print("작업 수행 중...")
 ```
