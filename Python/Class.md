@@ -1,7 +1,5 @@
-## Class
+# Class
 - 속성(Attributes)과 메서드(Methods)로 구성
-
- 
 
 
 **속성(Attributes)**
@@ -21,21 +19,41 @@
 
  
 
-클래스 만들기
+### 클래스 만들기
 
-0. pass 구문 : class 이름만 정의하고 내용을 비워둘 경우 사용
+```python
+class Dog:
+    pass
+```
+- pass 구문은 class 이름만 정의하고 내용을 비워둘 경우 사용
 
 
-1. 생성자 정의 :
-
+1. 생성자 정의
+```python
 def __init__(self, name, breed) :
-
     self.name = name
     self.breed = breed
+```
+ - 속성은 클래스의 생성자 메서드인 `__init__` 에서 정의
+ - `__init__` 메서드는 객체가 생성될 때 자동으로 호출되며, 객체의 초기 속성을 설정
 
- - 속성은 클래스의 생성자 메서드인 __init__ 에서 정의
- - __init__ 메서드는 객체가 생성될 때 자동으로 호출되며, 객체의 초기 속성을 설정
+2. 메서드 정의
+```py
+    def bark(self):
+        return f"{self.name}가 짖습니다."
 
-2. 메서드 정의 : def bark(self) : 
+    def introduce(self):
+        return f"이름: {self.name}, 품종: {self.breed}"
+```
 
-3. 객체 생성 : my_dog = Dog("Buddy", "Golden Retriever")
+3. 객체 생성
+```py
+# 여러 개의 Dog 객체 생성
+dog1 = Dog("Max", "Bulldog")
+dog2 = Dog("Bella", "Poodle")
+```
+---
+## 매직 메서드
+ -  Python에서 특별한 역할을 수행하는 **미리 정의된** 메서드
+ ```py
+ ```
