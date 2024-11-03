@@ -1,3 +1,78 @@
+# 데이터프레임
+
+```py
+import pandas as pd
+df = pd.read_OOO('data.OOO') # 파일 불러오기
+df = pd.DataFrame({
+                    '이름' : ['철수', '영희', '민수'],
+                    '나이' : [25,30,35],
+                    '직업' : ['학생', '회사원', '프리랜서']})
+
+df.to_OOO('data.OOO', index = False)
+
+#파일 미리보기
+df.head(3)
+df.tail(6)
+
+df['나이'].describe() : 나이 열의 각종 통계수치 확인
+df.loc[2, '이름'] : 3번째 행의 '이름' 컬럼 데이터 확인 (df.loc[:,'이름'] 도 가능)
+df.iloc[2, 5] : 3번째 행의 6번째 열 데이터 조회
+
+df['이름'] : '이름' 컬럼 전체 조회
+df[['이름', '나이']] : '이름', '나이' 컬럼 전체 조회
+
+1. loc 메서드는 데이터프레임이 인덱싱 되어있어야 사용 가능하다.
+# 첫 번째와 두 번째 행 선택 print(df.iloc[0:2])
+
+TMI : 데이터프레임은 대괄호안에 특정 조건을 입력해서 필터링이 가능하다.
+TMI : 특정 데이터들이 포함되어있는지 체크할 때 isin함수 사용
+
+2. df 데이터 변환
+ - 특정 열의 데이터 타입을 변경할 때 : df['컬럼명'].astype(int) // 카테고리로 변경하면 메모리 절약 가능
+ - 특정 열을 날짜 타입으로 변경할 때 : pd.to_datetime(df['컬럼명'])
+
+3. 데이터 정렬 (sort)
+나이 오름차순 정렬 : df.sort_values(by='나이')
+  >> 내림차순 정렬 시 함수 안에 ascending=False 선언
+  >> 여러개의 컬럼으로도 정렬 가능 by=['직업','나이']
+인덱스 기준 정렬 : df.sort_index()
+
+4. 데이터 병합
+머지 : df = pd.merge(df1, df2, on='이름', how='outer')
+inner (기본값): 공통된 데이터만 병합.
+outer: 공통되지 않은 데이터도 포함하여 병합, 없는 값은 NaN으로 채움.
+left: 왼쪽 데이터프레임 기준으로 병합.
+right: 오른쪽 데이터프레임 기준으로 병합.
+행 단위로 연결 : df = pd.concat([df1, df2], axis=0)
+열 단위로 연결 : df = pd.concat([df1, df2], axis=1)
+
+5. 데이터 그룹화
+df.groupby('이름') : '이름' 컬럼을 기준으로 그룹화
+# 이름과 과목을 기준으로 그룹화하여 점수 합계 계산
+df = df.groupby(['이름', '과목'])['점수'].sum()
+
+6. 피벗 테이블 (pivot table)
+pivot = pd.pivot_table(df, index='이름', columns='과목', values='점수', aggfunc='mean')
+------------
+과목    과학    수학    영어
+이름
+민수   95.0     NaN     NaN
+영희    NaN    85.0    88.0
+철수    NaN    90.0    75.0
+지수   80.0     NaN     NaN
+
+# margins=True 사용 시 마지막 행,열에 총합계 추가
+pivot = pd.pivot_table(df, index='이름', columns='과목', values='점수', aggfunc='mean', margins=True)
+----------------
+과목      과학    수학    영어     All
+이름
+민수     95.0     NaN     NaN     95.0
+영희      NaN    85.0    88.0    173.0
+철수      NaN    90.0    75.0    165.0
+지수     80.0     NaN     NaN     80.0
+All     175.0   175.0   163.0    513.0
+```
+
 # 데이터 전처리
 <img src="./images/data_preprocess.png" style="width:100%; height:auto;display: block; margin: 0 auto;">
 
