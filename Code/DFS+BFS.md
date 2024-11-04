@@ -104,7 +104,7 @@ print (dfs(graph, 'A'))
 1. 주어진 노드 개수를 토대로 각 노드에 인덱싱 부여 (1~N)
 2. 간선 정보를 토대로 각 노드별 인접한 노드 리스트 생성 (양방향)
 3. 리스트 sort (오름차순) 후 dictionary 형태로 저장
-4. DFS, BFS 함수 생성 후 각 결과값 출력
+4. DFS, BFS 함수 생성 후 각 결과값   출력
 
 **TMI**
 ```py
@@ -114,6 +114,6 @@ df.duplicated()
 # 'name' 컬럼만을 기준으로 중복 검사
 df.duplicated(subset=['name'])
 
-# df의 각 컬럼값들 중 결측치들의 갯수를 missing value 열로 추가'
-df['missing value'] = df.isnull().sum(axis=1)
+# df의 각 컬럼들의 결측치 개수 확인
+print(df.isnull().sum(axis=0))
 ```
