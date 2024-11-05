@@ -15,7 +15,7 @@
 8. FTP : 네트워크 환경에서 가장 많이 이용되는 서비스 중 하나로 서버-클라 간 파일 전송 기능을 지원한다. 이 원격 시스템에 접속하려면 FTP 서버에 등록된 로그인 계정과 암호가 필요하다.
 ```
 
-<img src="./images/portNo.png" style="width:80%; height:auto;display: block; margin: 0 auto;">
+<img src="./images/portNo.png" style="width:50%; height:auto;display: block; margin: 0 auto;">
 
 ### 노드
  - 인터넷에 연결된 시스템을 가장 일반화한 용어
@@ -33,7 +33,7 @@
 클라이언트와 서버
 그림에서 호스트 2는 파일 송수신 기능을 제공하는 FTP(File Transfer Protocol) 서비스를 제공하며, 호스트 3은 원격 단말기 기능인 텔넷(Telnet) 서비스를 제공한다.
 
-<img src="./images/ClientandServer.jpg" style="width:60%; height:auto;display: block; margin: 0 auto;">
+<img src="./images/ClientandServer.jpg" style="width:50%; height:auto;display: block; margin: 0 auto;">
 
 &nbsp;
 
@@ -73,7 +73,7 @@ DNS(Domain Name System)는 주소와 이름 정보를 자동으로 유지하고 
 
 프록시(Proxy)는 응용 환경에서 적절하게 처리할 수 있는 정보만 수신하도록 가상의 응용 프로그램을 시뮬레이션하는 방화벽이다. 프록시는 내부 네트워크의 호스트에는 외부 네트워크의 응용 연결처럼 보이고, 외부 네트워크에는 내부 네트워크의 응용 연결처럼 보인다.
 
-<img src="./images/FirewallusingProxy.jpg" style="width:70%; height:auto;display: block; margin: 0 auto;">
+<img src="./images/FirewallusingProxy.jpg" style="width:50%; height:auto;display: block; margin: 0 auto;">
 
 &nbsp;
 
@@ -101,7 +101,7 @@ DNS(Domain Name System)는 주소와 이름 정보를 자동으로 유지하고 
 ③ 서버에 서비스 요청
 ④ 서버에 서비스 요구 완료
 
-<img src="./images/TCP.jpg" style="width:70%; height:auto;display: block; margin: 0 auto;">
+<img src="./images/TCP.jpg" style="width:50%; height:auto;display: block; margin: 0 auto;">
 
 &nbsp;
 
