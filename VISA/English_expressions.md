@@ -11,4 +11,4 @@
     On account of : 따지고 보면 ~의 이유로
     because : 왜냐하면
 
-    ![image](https://github.com/user-attachments/assets/eca4bf81-f133-4591-80dd-7216831c6fdd)
+<img src="./images/tense.png" style="width:60%; height:auto;display: block; margin: 0 auto;">
