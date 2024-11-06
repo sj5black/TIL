@@ -10,3 +10,5 @@
     As a result of : ~의 결과로
     On account of : 따지고 보면 ~의 이유로
     because : 왜냐하면
+
+    ![image](https://github.com/user-attachments/assets/eca4bf81-f133-4591-80dd-7216831c6fdd)
