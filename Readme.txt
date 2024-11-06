@@ -6,6 +6,9 @@
  - Network
  - Several_Codes
 
+Large file push 오류 시 해결법
+git fetch origin
+git reset --hard origin/브랜치명
 
 <img src="./images/Ridge_func.png" style="width:40%; height:auto;display: block; margin: 0 auto;">
 =======install settings=======
