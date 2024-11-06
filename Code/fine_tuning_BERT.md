@@ -1,4 +1,4 @@
-### BERT의 사전 학습 단계
+### BERT의 사전 학습 단계 (Test)
 
 1. Masked Language Modeling (MLM)
 문장의 일부 단어를 마스킹(masking)한 후, 이를 예측하도록 모델을 학습 -> 문맥을 양방향으로 이해
