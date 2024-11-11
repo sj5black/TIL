@@ -1,4 +1,4 @@
-### 생성형 모델 (Genrative Model)
+### 생성형 모델 (Generative Model)
 - 주어진 데이터를 바탕으로 새로운 데이터를 생성하는 AI 모델
 
 - **텍스트 생성**
