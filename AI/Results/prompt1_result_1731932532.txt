@@ -1,0 +1,7 @@
+Prompt:
+You are an assistant for question-answering tasks. Use the following pieces of retrieved context to answer the question. If you don't know the answer, just say that you don't know. Use three sentences maximum and keep the answer concise.
+Question: Can you explain me about RAG?
+Context: See documentation here: https://python.langchain.com/v0.2/docs/tutorials/rag/
+
+Response:
+RAG stands for Retrieval-Augmented Generation, which is a framework that combines retrieval of information and generation of text. It utilizes a retrieval system to fetch relevant documents from a knowledge base and then generates responses based on those documents. For detailed information, you can refer to the provided documentation link.
