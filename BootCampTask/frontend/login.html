@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인 페이지</title>
+    <style>
+        /* css */
+        .mytitle {
+            color:red;
+            font-size: 40px;
+        }
+        
+        .mytxt {
+            color:orange;
+        }
+        /* #id {
+            color:blue;
+        } */
+
+        .mybtn{
+            color:white;
+            background-color: green;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="mytitle">로그인 페이지</h1>
+    <p id="id" class="mytxt">ID : <input type="text"></p>
+    <p class="mytxt">PW : <input type="text"></p>
+    <button class="mybtn"> Login </button>
+</body>
+</html>
+
+
+// Load audio files
+            const usAudio = new Audio(selectedWord.usAudio);
+            const ukAudio = new Audio(selectedWord.ukAudio);
+
+            // Play US and UK pronunciations
+            usAudio.play();
+            setTimeout(() => {
+                ukAudio.play();
+            }, 1300);

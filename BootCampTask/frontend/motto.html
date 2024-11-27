@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+        body {
+            background-image: url("https://s3.ap-northeast-2.amazonaws.com/materials.spartacodingclub.kr/webjong/images/background.jpg");
+            background-position: center;
+            background-size: cover;
+            color: white;
+        }
+        .navbar {
+            display:flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .weather {
+            display: flex;
+            align-items: center;
+            margin-right: 30px;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+
+            font-weight: bold;
+            padding: 20px 0;
+        }
+        .greeting{
+            margin-bottom: 50px;
+        }
+        .motto{
+            margin-bottom: 100px;
+        }
+        .logo{
+            margin-left: 30px;
+            height: 32px;
+        }
+
+        
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+        <img class="logo" src="https://s3.ap-northeast-2.amazonaws.com/materials.spartacodingclub.kr/webjong/images/sparta-logo.svg" alt=""/>
+        <div class="weather">
+            <img src="https://ssl.gstatic.com/onebox/weather/64/partly_cloudy.png" id="weather-icon">
+            <p>날씨 맑음, 20ºC</p>
+        </div>
+    </nav>
+    <!-- main -->
+    <div class="container">
+        <div class="greeting">
+            <h1>Hello, My name!</h1>
+            <h1>12:30</h1>
+        </div>
+        
+        <div class="motto">
+            <h3>My life's motto</h3>
+            <h2>웃으면 행복해집니다.</h2>            
+        </div>
+    </div>
+    
+    <!-- footer -->
+    <div class="footer">
+        <p>- 작자 미상 -</p>
+        <p>멋진 명언입니다. 아이스크림을 먹으면 행복해져요.</p>
+    </div>
+
+
+    
+  </body>
+</html>

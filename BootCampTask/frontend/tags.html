@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Words with API</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+        }
+        h1 {
+            margin-top: 30px;
+            color: #343a40;
+        }
+        .card {
+            margin-top: 30px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .audio-buttons {
+            margin-top: 20px;
+        }
+        button {
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container text-center">
+        <h1>Learn a Random Word</h1>
+        
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title" id="word">Click the button to learn a new word!</h2>
+                <h5 class="card-subtitle mb-2 text-muted" id="translation"></h5>
+                <p class="card-text" id="definition"></p>
+                
+                <div class="audio-buttons">
+                    <button class="btn btn-primary" id="us-audio-btn">Play US Pronunciation</button>
+                    <button class="btn btn-secondary" id="uk-audio-btn">Play UK Pronunciation</button>
+                </div>
+            </div>
+        </div>
+        
+        <button class="btn btn-success mt-4" onclick="fetchRandomWord()">Get Random Word</button>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        async function fetchRandomWord() {
+            const apiKey = 'YOUR_API_KEY';  // WordsAPI API Key
+            const apiUrl = 'https://wordsapiv1.p.rapidapi.com/words/?random=true';
+
+            // Fetch random word from WordsAPI
+            const response = await fetch(apiUrl, {
+                method: 'GET',
+                headers: {
+                    'x-rapidapi-host': 'wordsapiv1.p.rapidapi.com',
+                    'x-rapidapi-key': apiKey
+                }
+            });
+
+            const data = await response.json();
+            const word = data.word;
+            const definition = data.results ? data.results[0].definition : 'No definition available';
+
+            // Update DOM with word and definition
+            document.getElementById("word").textContent = word;
+            document.getElementById("definition").textContent = definition;
+
+            // Play pronunciation using available phonetic pronunciation (this example does not include audio URLs from WordsAPI)
+            // You could use additional API calls or services for actual pronunciation URLs
+
+            // Example placeholders for US/UK pronunciation
+            const usAudio = new Audio('https://ssl.gstatic.com/dictionary/static/sounds/oxford/' + word + '--_us_1.mp3');
+            const ukAudio = new Audio('https://ssl.gstatic.com/dictionary/static/sounds/oxford/' + word + '--_gb_1.mp3');
+
+            // Automatically play US pronunciation, then UK pronunciation after 2 seconds
+            usAudio.play();
+            setTimeout(() => ukAudio.play(), 2000);
+
+            // Set the audio buttons to replay the pronunciations
+            document.getElementById("us-audio-btn").onclick = () => usAudio.play();
+            document.getElementById("uk-audio-btn").onclick = () => ukAudio.play();
+        }
+    </script>
+</body>
+</html>

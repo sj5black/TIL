@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn C2 Level Words with Example Sentences</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Lora&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-image: url('https://cdn.weekly.chosun.com/news/photo/202303/24791_47274_018.gif'); /* 런던 사진 URL로 교체하세요 */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            font-family: 'Lora'; /* 필기체 폰트 설정 */
+            font-size: 1.5em; /* 기본 폰트 크기 조정 */
+        }
+        h1 {
+            margin-top: 30px;
+            color: #343a40;
+            font-size: 2.5em; /* 제목 크기 조정 */
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* 전체 화면 높이를 100%로 설정 */
+        }
+        .card {
+            margin: 20px;
+            padding: 20px; /* 카드 패딩 조정 */
+            box-shadow: 0 4px 8px rgba(255, 255, 255, 0.843);
+            width: 90%; /* 카드 너비 조정 */
+            max-width: 600px; /* 최대 너비 설정 */
+            text-align: center;
+        }
+        .card-title {
+            font-size: 2em; /* 카드 제목 크기 조정 */
+            margin-bottom: 20px; /* 제목과 다른 요소 간의 간격 설정 */
+        }
+        .audio-button {
+            margin-top: 20px;
+        }
+        button {
+            width: calc(30% - 10px); /* 버튼의 너비 조정 */
+            font-size: 1.2em; /* 버튼 텍스트 크기 조정 */
+            padding: 10px; /* 버튼 패딩 설정 */
+            margin: 10px; /* 버튼 간의 간격 설정 */
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container text-center">
+        
+        <!-- <h1>Learn a C2 Level Word with Example Sentences</h1> -->
+        
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title" id="word">Ready?</h2>
+                <h5 class="card-subtitle mb-2 text-muted" id="translation"></h5>
+                <img id="image" src="" alt="Related image" style="display:none;">
+                <p class="card-text" id="example"></p>
+                
+                <div class="audio-button">
+                    <button class="btn btn-primary" id="audio-btn">Again</button>
+                    <button class="btn btn-danger" id="know-btn">Delete</button>
+                </div>
+            </div>
+        </div>
+        
+        <button class="btn btn-success mt-4" onclick="fetchRandomWord()">New Words</button>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Initial words list with C2 level vocabulary
+        const words = [
+            { 
+                word: "aberration", 
+                example: "The low sales figures were seen as an aberration in an otherwise successful year.",
+                translation: "일탈",
+                // image: "https://example.com/images/aberration.jpg",
+                usaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/aberration--_us_1.mp3",
+                ukaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/aberration--_gb_1.mp3"
+            },
+            { 
+                word: "bellicose", 
+                example: "The bellicose statements made by the leader increased tensions between the countries.",
+                translation: "호전적인",
+                // image: "https://example.com/images/bellicose.jpg",
+                usaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/bellicose--_us_1.mp3",
+                ukaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/bellicose--_gb_1.mp3"
+            },
+            { 
+                word: "cacophony", 
+                example: "The cacophony of the city made it hard to concentrate.",
+                translation: "불협화음",
+                // image: "https://example.com/images/cacophony.jpg",
+                usaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/cacophony--_us_1.mp3",
+                ukaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/cacophony--_gb_1.mp3"
+            },
+            { 
+                word: "deference", 
+                example: "He showed deference to his elders by listening attentively.",
+                translation: "존경, 경의",
+                // image: "https://example.com/images/deference.jpg",
+                usaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/deference--_us_1.mp3",
+                ukaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/deference--_gb_1.mp3"
+            },
+            { 
+                word: "efficacious", 
+                example: "The new drug proved to be efficacious in treating the disease.",
+                translation: "효과적인",
+                // image: "https://example.com/images/efficacious.jpg",
+                usaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/efficacious--_us_1.mp3",
+                ukaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/efficacious--_gb_1.mp3"
+            },
+            { 
+                word: "fracas", 
+                example: "A fracas broke out among the spectators at the game.",
+                translation: "소란",
+                // image: "https://example.com/images/fracas.jpg",
+                usaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/fracas--_us_1.mp3",
+                ukaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/fracas--_gb_1.mp3"
+            },
+            { 
+                word: "garrulous", 
+                example: "The garrulous old man told stories for hours.",
+                translation: "수다스러운",
+                // image: "https://example.com/images/garrulous.jpg",
+                usaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/garrulous--_us_1.mp3",
+                ukaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/garrulous--_gb_1.mp3"
+            },
+            { 
+                word: "harangue", 
+                example: "He delivered a harangue against the injustices of the world.",
+                translation: "열변",
+                // image: "https://example.com/images/harangue.jpg",
+                usaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/harangue--_us_1.mp3",
+                ukaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/harangue--_gb_1.mp3"
+            },
+            { 
+                word: "ineffable", 
+                example: "The beauty of the sunset was ineffable.",
+                translation: "말로 표현할 수 없는",
+                // image: "https://example.com/images/ineffable.jpg",
+                usaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/ineffable--_us_1.mp3",
+                ukaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/ineffable--_gb_1.mp3"
+            },
+            { 
+                word: "juxtaposition", 
+                example: "The juxtaposition of the two paintings highlighted their differences.",
+                translation: "나란히 놓기",
+                // image: "https://example.com/images/juxtaposition.jpg",
+                usaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/juxtaposition--_us_1.mp3",
+                ukaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/juxtaposition--_gb_1.mp3"
+            },
+            { 
+                word: "kaleidoscope", 
+                example: "Life can be a kaleidoscope of experiences.",
+                translation: "만화경",
+                // image: "https://example.com/images/kaleidoscope.jpg",
+                usaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/kaleidoscope--_us_1.mp3",
+                ukaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/kaleidoscope--_gb_1.mp3"
+            },
+            { 
+                word: "laconic", 
+                example: "His laconic reply suggested he was uninterested in the conversation.",
+                translation: "간결한",
+                // image: "https://example.com/images/laconic.jpg",
+                usaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/laconic--_us_1.mp3",
+                ukaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/laconic--_gb_1.mp3"
+            },
+            { 
+                word: "mellifluous", 
+                example: "The singer's mellifluous voice captivated the audience.",
+                translation: "달콤하게 흐르는",
+                // image: "https://example.com/images/mellifluous.jpg",
+                usaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/mellifluous--_us_1.mp3",
+                ukaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/mellifluous--_gb_1.mp3"
+            },
+            { 
+                word: "nefarious", 
+                example: "The nefarious plot was uncovered by the detective.",
+                translation: "악랄한",
+                // image: "https://example.com/images/nefarious.jpg",
+                usaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/nefarious--_us_1.mp3",
+                ukaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/nefarious--_gb_1.mp3"
+            },
+            { 
+                word: "obfuscate", 
+                example: "The lawyer tried to obfuscate the facts of the case.",
+                translation: "애매하게 하다",
+                // image: "https://example.com/images/obfuscate.jpg",
+                usaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/obfuscate--_us_1.mp3",
+                ukaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/obfuscate--_gb_1.mp3"
+            },
+            { 
+                word: "pugnacious", 
+                example: "His pugnacious attitude often got him into trouble.",
+                translation: "호전적인",
+                // image: "https://example.com/images/pugnacious.jpg",
+                usaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/pugnacious--_us_1.mp3",
+                ukaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/pugnacious--_gb_1.mp3"
+            },
+            { 
+                word: "quintessential", 
+                example: "She is the quintessential modern woman.",
+                translation: "전형적인",
+                // image: "https://example.com/images/quintessential.jpg",
+                usaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/quintessential--_us_1.mp3",
+                ukaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/quintessential--_gb_1.mp3"
+            },
+            { 
+                word: "rebuff", 
+                example: "Her rebuff of his advances surprised him.",
+                translation: "거절하다",
+                // image: "https://example.com/images/rebuff.jpg",
+                usaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/rebuff--_us_1.mp3",
+                ukaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/rebuff--_gb_1.mp3"
+            },
+            { 
+                word: "sagacious", 
+                example: "His sagacious decisions led the company to success.",
+                translation: "현명한",
+                // image: "https://example.com/images/sagacious.jpg",
+                usaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/sagacious--_us_1.mp3",
+                ukaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/sagacious--_gb_1.mp3"
+            },
+            { 
+                word: "taciturn", 
+                example: "She was a taciturn woman who spoke little.",
+                translation: "말이 없는",
+                // image: "https://example.com/images/taciturn.jpg",
+                usaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/taciturn--_us_1.mp3",
+                ukaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/taciturn--_gb_1.mp3"
+            },
+            { 
+                word: "ubiquitous", 
+                example: "Smartphones are ubiquitous in today’s society.",
+                translation: "어디에나 존재하는",
+                // image: "https://example.com/images/ubiquitous.jpg",
+                usaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/ubiquitous--_us_1.mp3",
+                ukaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/ubiquitous--_gb_1.mp3"
+            },
+            { 
+                word: "vicarious", 
+                example: "She took vicarious pleasure in her friend’s success.",
+                translation: "대리의",
+                // image: "https://example.com/images/vicarious.jpg",
+                usaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/vicarious--_us_1.mp3",
+                ukaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/vicarious--_gb_1.mp3"
+            },
+            { 
+                word: "wistful", 
+                example: "He had a wistful look on his face as he remembered the past.",
+                translation: "그리운",
+                // image: "https://example.com/images/wistful.jpg",
+                usaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/wistful--_us_1.mp3",
+                ukaudio: "https://ssl.gstatic.com/dictionary/static/sounds/oxford/wistful--_gb_1.mp3"
+            }
+        ];
+
+        let currentWordIndex = 0; // 현재 단어 인덱스
+        let usAudio, ukAudio; // 음성 오디오 객체
+
+        // Function to fetch the next word
+        // Function to fetch the next word
+        function fetchRandomWord() {
+            // Check if we have gone through all the words
+            if (currentWordIndex >= words.length) {
+                currentWordIndex = 0; // Reset to the first word
+            }
+
+            // Stop any currently playing audio
+            if (usAudio && !usAudio.paused) {
+                usAudio.pause();
+                usAudio.currentTime = 0; // Reset audio to start
+            }
+            if (ukAudio && !ukAudio.paused) {
+                ukAudio.pause();
+                ukAudio.currentTime = 0; // Reset audio to start
+            }
+
+            // Get the next word
+            const selectedWord = words[currentWordIndex];
+
+            // Update the DOM with the selected word, example, and image
+            document.getElementById("word").textContent = selectedWord.word;
+            document.getElementById("example").textContent = selectedWord.example;
+            document.getElementById("translation").textContent = selectedWord.translation;
+            // const imageElement = document.getElementById("image");
+            // imageElement.src = selectedWord.image;
+            // imageElement.style.display = "block";
+
+            // Load audio files
+            usAudio = new Audio(selectedWord.usaudio);
+            ukAudio = new Audio(selectedWord.ukaudio);
+
+            // Play US pronunciation
+            usAudio.play();
+            usAudio.onended = () => {
+                // Play UK pronunciation after US pronunciation ends
+                ukAudio.play();
+            };
+
+            // Set audio button to play manually
+            document.getElementById("audio-btn").onclick = () => {
+                usAudio.play();
+                usAudio.onended = () => {
+                    // Play UK pronunciation after US pronunciation ends
+                    ukAudio.play();
+                };
+            };
+
+            // Increment the index for the next word
+            currentWordIndex++;
+        }
+
+        // Initialize the first word
+        fetchRandomWord();
+    </script>
+</body>
+</html>
