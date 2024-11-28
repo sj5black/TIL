@@ -5,10 +5,34 @@ import os
 import pandas as pd
 import uuid
 import requests  # FastAPI와 통신
+import logging
+import subprocess
+import time
 
-# FastAPI 서버 URL 선언
-API_BASE_URL = "http://127.0.0.1:8000"  # FastAPI 서버 주소
 
+########### FastAPI 서버 URL 선언 / 로그파일 생성 ###################
+API_BASE_URL = "http://127.0.0.1:8002"  # FastAPI 서버 로컬 호스트 값
+# API_BASE_URL = "http://0.0.0.0:8000"  # FastAPI 서버 외부 연결 시
+
+logging.basicConfig(
+    filename="UI.log",
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s"
+)
+logging.info("Streamlit UI started.")
+
+################# FastAPI 서버 실행 #################################
+subprocess.Popen(["uvicorn", "API_server:app", "--reload", "--port", "8002"])
+def wait_for_api():
+    while True:
+        try:
+            response = requests.get(f"{API_BASE_URL}/server_check")  # health_check 엔드포인트를 통해 서버 상태 확인
+            if response.status_code == 200:
+                break
+        except requests.exceptions.RequestException:
+            time.sleep(1)  # 서버가 준비될 때까지 1초 간격으로 반복
+    
+wait_for_api()
 ####################### OpenAI API키 호출 ###########################
 # .env 파일에서 api 키 가져오기
 load_dotenv()
@@ -27,6 +51,14 @@ try:
     chat_history_df = pd.read_csv(CSV_FILE)
 except FileNotFoundError:
     chat_history_df = pd.DataFrame(columns=["ChatID", "Role", "Content"])
+
+########### session_state 전역변수 초기값 설정 #############
+if "selected_theme" not in st.session_state:
+    st.session_state.selected_theme = '파이썬 라이브러리'
+if 'type_' not in st.session_state:
+    st.session_state.type_ = 'python'
+if 'user_id' not in st.session_state:
+    st.session_state.user_id = 'Unknown'
 
 ####################### UI 구성 ###########################
 # 페이지 구성
@@ -67,34 +99,44 @@ theme_to_type = {
     'AI 활용': 'open_source'
 }
 
-# 초기화된 선택 상태 (기본값 설정)
-if "selected_theme" not in st.session_state:
-    st.session_state.selected_theme = '파이썬 라이브러리'
-
 # 콜백 함수 정의
 def update_api_on_select():
-    selected_type = theme_to_type.get(st.session_state.selected_theme)
-    response = requests.post("http://localhost:8000/set_type", json={"type": selected_type})
+    
+    st.session_state.type_ = theme_to_type.get(st.session_state.selected_theme)
+    response = requests.post(f"{API_BASE_URL}/set_type", json={"sidebox_type": st.session_state.type_})
     if response.status_code == 200:
-        st.success(f"'{st.session_state.selected_theme}' 주제가 '{selected_type}'로 전달!")
+        st.success(f"'{st.session_state.selected_theme}' --> 서버에 '{st.session_state.type_}'값으로 전송")
     else:
         st.error("API 호출 실패: Server code error.")
 
 # 사이드바 구성
 st.sidebar.header('목차 선택')
-st.sidebar.selectbox(
+theme = st.sidebar.selectbox(
     '주제를 선택하세요.',
     options=list(theme_to_type.keys()),
     key="selected_theme",  # 상태 저장 키
     on_change=update_api_on_select  # 값 변경 시 콜백 호출
 )
-###############################################################
-###############################################################
-###############################################################
-
-
 st.sidebar.header('대화 내역')
+
+###############################################################
+##################### 퀴즈 생성 ###############################
+###############################################################
 st.write(f'{theme}에 대한 퀴즈를 내보겠습니다!')
+try:
+    st.write(f'현재 type_ 값/형식 : {st.session_state.type_}, {type(st.session_state.type_)}')
+    response = requests.post(f"{API_BASE_URL}/generate_quiz", json={"topic": st.session_state.type_})
+    response.raise_for_status()  # HTTP 에러 발생 시 예외를 발생시킴
+    quiz_data = response.json()  # JSON 형식의 응답을 받음
+    st.write(quiz_data)  # 퀴즈 내용을 출력
+    # 또는
+    # st.json(quiz_data)  # 퀴즈 내용을 JSON 형식으로 출력
+except requests.exceptions.RequestException as e:
+    logging.error(f"Error making API request: {e}")
+    st.error(f"API 호출 실패: {e}")
+
+
+
 
 
 ####################### 대화 시작 ###########################
@@ -111,25 +153,22 @@ for content in st.session_state.chat_session:
     with st.chat_message("ai" if content["role"] == "assistant" else "user"):
         st.markdown(content["content"])
 
+
+
 ################### 사용자 입력 ###############################
-if prompt := st.chat_input("메시지를 입력하세요."):
+if user_answer := st.chat_input("답변을 입력하세요."):
 
     with st.chat_message("user"):
-        st.markdown(prompt)
+        st.markdown(user_answer)
         # 사용자의 입력을 채팅 기록에 추가
-        st.session_state.chat_session.append({"role": "user", "content": prompt})
+        st.session_state.chat_session.append({"role": "user", "content": user_answer})
 
-    # 모델로부터 응답 받기
+    # 모델로부터 피드백 받기
     with st.chat_message("ai"):
-        response = openai.ChatCompletion.create(
-            model="gpt-4",  # 사용할 모델 지정 (gpt-4 또는 gpt-3.5-turbo 등)
-            messages=st.session_state.chat_session
-        )
-        # GPT의 응답 텍스트
-        reply = response["choices"][0]["message"]["content"]
-        st.markdown(reply)
+        feedback = requests.post(f"{API_BASE_URL}/check_answer")
+        st.markdown(feedback)
         # 응답을 채팅 기록에 추가
-        st.session_state.chat_session.append({"role": "assistant", "content": reply})
+        st.session_state.chat_session.append({"role": "assistant", "content": feedback})
 
     # 대화 내역을 CSV에 저장
     chat_id = str(uuid.uuid4())[:8]  # 고유한 ChatID 생성

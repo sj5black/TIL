@@ -1,0 +1,40 @@
+2024-11-29 03:34:08,947 - INFO - Backend API started.
+2024-11-29 03:41:42,693 - INFO - Backend API started.
+2024-11-29 03:41:43,647 - INFO - generate_quiz initial type_ : python
+2024-11-29 03:41:43,647 - INFO - generate_quiz initial session_no : 0
+2024-11-29 03:41:43,647 - INFO - generate_quiz initial user_id : sj5black
+2024-11-29 03:41:43,647 - INFO - generate_quiz initial request.topic : python
+2024-11-29 03:41:43,647 - INFO - generate_quiz initial order : 3
+2024-11-29 03:41:43,647 - INFO - Generating quiz for topic: python
+2024-11-29 03:41:50,165 - INFO - set_type test -> type_ : ml
+2024-11-29 03:41:50,198 - INFO - generate_quiz initial type_ : python
+2024-11-29 03:41:50,198 - INFO - generate_quiz initial session_no : 0
+2024-11-29 03:41:50,198 - INFO - generate_quiz initial user_id : sj5black
+2024-11-29 03:41:50,198 - INFO - generate_quiz initial request.topic : ml
+2024-11-29 03:41:50,198 - INFO - generate_quiz initial order : 3
+2024-11-29 03:41:50,198 - INFO - Generating quiz for topic: ml
+2024-11-29 03:41:52,127 - INFO - set_type test -> type_ : dl
+2024-11-29 03:41:52,156 - INFO - generate_quiz initial type_ : python
+2024-11-29 03:41:52,156 - INFO - generate_quiz initial session_no : 0
+2024-11-29 03:41:52,156 - INFO - generate_quiz initial user_id : sj5black
+2024-11-29 03:41:52,156 - INFO - generate_quiz initial request.topic : dl
+2024-11-29 03:41:52,156 - INFO - generate_quiz initial order : 3
+2024-11-29 03:41:52,156 - INFO - Generating quiz for topic: dl
+2024-11-29 03:41:53,161 - INFO - set_type test -> type_ : llm
+2024-11-29 03:41:53,193 - INFO - generate_quiz initial type_ : python
+2024-11-29 03:41:53,194 - INFO - generate_quiz initial session_no : 0
+2024-11-29 03:41:53,194 - INFO - generate_quiz initial user_id : sj5black
+2024-11-29 03:41:53,194 - INFO - generate_quiz initial request.topic : llm
+2024-11-29 03:41:53,194 - INFO - generate_quiz initial order : 3
+2024-11-29 03:41:53,194 - INFO - Generating quiz for topic: llm
+2024-11-29 03:41:53,240 - INFO - Backend API started.
+2024-11-29 03:41:54,638 - INFO - set_type test -> type_ : open_source
+2024-11-29 03:41:54,669 - INFO - generate_quiz initial type_ : python
+2024-11-29 03:41:54,669 - INFO - generate_quiz initial session_no : 0
+2024-11-29 03:41:54,669 - INFO - generate_quiz initial user_id : sj5black
+2024-11-29 03:41:54,669 - INFO - generate_quiz initial request.topic : open_source
+2024-11-29 03:41:54,669 - INFO - generate_quiz initial order : 3
+2024-11-29 03:41:54,669 - INFO - Generating quiz for topic: open_source
+2024-11-29 03:41:55,208 - INFO - Backend API started.
+2024-11-29 03:41:56,196 - INFO - Backend API started.
+2024-11-29 03:41:57,635 - INFO - Backend API started.
