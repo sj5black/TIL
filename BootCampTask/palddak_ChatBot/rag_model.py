@@ -287,6 +287,7 @@ def get_session_no(id: str) -> int:
 ######################## AI 퀴즈 ##############################
 ###############################################################
 def get_question(session_no:int, id:str, type_:str,  order:str):
+    
     """
     load_dotenv()
     api_key = os.getenv("OPEN_AI_KEY")
@@ -295,9 +296,9 @@ def get_question(session_no:int, id:str, type_:str,  order:str):
     global quiz_list
     global j
         
-    quiz_list = quiz_list[-5:]  # 최신 5개 퀴즈만 보관
+    quiz_list = quiz_list[-5:]  # 최신 5개 퀴즈만 보관 """
     txt_list = choose_txt_list(type_)
-
+    """
     retriever = get_retriever(txt_list[order-1], current_index, api_key)
     if type_ == "open_source":
         rag_chain = create_open_source_rag_chain(retriever, get_llm(api_key))
@@ -332,16 +333,18 @@ def get_question(session_no:int, id:str, type_:str,  order:str):
 
     return ''.join(response)
     """
-    if (type_ == "python"):
-        return "테스트 문제입니다. quiz_list 는 왜 비어있을까요? @_@"
-    elif (type_ == "dl"):
-        return "딥러닝 와도 달라지는 건 없습니다~ quiz_list 는 왜 비어있을까요? @_@"
-    elif (type_ == "ml"):
-        return "이번엔 머신러닝. quiz_list 는 왜 비어있을까요? @_@"
-    elif (type_ == "llm"):
-        return "LLM/RAG. quiz_list 는 왜 비어있을까요? @_@"
-    elif (type_ == "open_source"):
-        return "AI 활용까지 서버연결 완. quiz_list 는 왜 비어있을까요? @_@"
+    # if (type_ == "python"):
+    #     return "테스트 문제입니다. quiz_list 는 왜 비어있을까요? @_@"
+    # elif (type_ == "dl"):
+    #     return "딥러닝 와도 달라지는 건 없습니다~ quiz_list 는 왜 비어있을까요? @_@"
+    # elif (type_ == "ml"):
+    #     return "이번엔 머신러닝. quiz_list 는 왜 비어있을까요? @_@"
+    # elif (type_ == "llm"):
+    #     return "LLM/RAG. quiz_list 는 왜 비어있을까요? @_@"
+    # elif (type_ == "open_source"):
+    #     return "AI 활용까지 서버연결 완. quiz_list 는 왜 비어있을까요? @_@"
+
+    return txt_list
 ###############################################################
 ######################## AI 피드백 ############################
 ###############################################################

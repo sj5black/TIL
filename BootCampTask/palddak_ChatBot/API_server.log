@@ -38,3 +38,102 @@
 2024-11-29 03:41:55,208 - INFO - Backend API started.
 2024-11-29 03:41:56,196 - INFO - Backend API started.
 2024-11-29 03:41:57,635 - INFO - Backend API started.
+2024-11-29 09:28:41,224 - INFO - Backend API started.
+2024-11-29 09:28:42,045 - INFO - generate_quiz initial type_ : python
+2024-11-29 09:28:42,045 - INFO - generate_quiz initial session_no : 0
+2024-11-29 09:28:42,045 - INFO - generate_quiz initial user_id : sj5black
+2024-11-29 09:28:42,045 - INFO - generate_quiz initial request.topic : python
+2024-11-29 09:28:42,045 - INFO - generate_quiz initial order : 3
+2024-11-29 09:28:42,045 - INFO - Generating quiz for topic: python
+2024-11-29 09:28:42,052 - ERROR - Unexpected error: name 'quiz_list' is not defined
+2024-11-29 09:33:12,979 - INFO - set_type test -> type_ : ml
+2024-11-29 09:33:13,014 - INFO - generate_quiz initial type_ : python
+2024-11-29 09:33:13,014 - INFO - generate_quiz initial session_no : 0
+2024-11-29 09:33:13,014 - INFO - generate_quiz initial user_id : sj5black
+2024-11-29 09:33:13,014 - INFO - generate_quiz initial request.topic : ml
+2024-11-29 09:33:13,014 - INFO - generate_quiz initial order : 3
+2024-11-29 09:33:13,014 - INFO - Generating quiz for topic: ml
+2024-11-29 09:33:13,025 - ERROR - Unexpected error: name 'quiz_list' is not defined
+2024-11-29 09:33:16,917 - INFO - Backend API started.
+2024-11-29 09:33:19,124 - INFO - set_type test -> type_ : dl
+2024-11-29 09:33:19,158 - INFO - generate_quiz initial type_ : python
+2024-11-29 09:33:19,158 - INFO - generate_quiz initial session_no : 0
+2024-11-29 09:33:19,158 - INFO - generate_quiz initial user_id : sj5black
+2024-11-29 09:33:19,158 - INFO - generate_quiz initial request.topic : dl
+2024-11-29 09:33:19,158 - INFO - generate_quiz initial order : 3
+2024-11-29 09:33:19,159 - INFO - Generating quiz for topic: dl
+2024-11-29 09:33:19,168 - ERROR - Unexpected error: name 'quiz_list' is not defined
+2024-11-29 09:33:23,238 - INFO - Backend API started.
+2024-11-29 09:34:47,323 - INFO - set_type test -> type_ : ml
+2024-11-29 09:34:47,361 - INFO - generate_quiz initial type_ : python
+2024-11-29 09:34:47,361 - INFO - generate_quiz initial session_no : 0
+2024-11-29 09:34:47,361 - INFO - generate_quiz initial user_id : sj5black
+2024-11-29 09:34:47,361 - INFO - generate_quiz initial request.topic : ml
+2024-11-29 09:34:47,361 - INFO - generate_quiz initial order : 3
+2024-11-29 09:34:47,361 - INFO - Generating quiz for topic: ml
+2024-11-29 09:34:47,371 - ERROR - Unexpected error: name 'quiz_list' is not defined
+2024-11-29 09:34:49,020 - INFO - set_type test -> type_ : python
+2024-11-29 09:34:49,056 - INFO - generate_quiz initial type_ : python
+2024-11-29 09:34:49,056 - INFO - generate_quiz initial session_no : 0
+2024-11-29 09:34:49,056 - INFO - generate_quiz initial user_id : sj5black
+2024-11-29 09:34:49,057 - INFO - generate_quiz initial request.topic : python
+2024-11-29 09:34:49,057 - INFO - generate_quiz initial order : 3
+2024-11-29 09:34:49,057 - INFO - Generating quiz for topic: python
+2024-11-29 09:34:49,068 - ERROR - Unexpected error: name 'quiz_list' is not defined
+2024-11-29 09:34:51,506 - INFO - Backend API started.
+2024-11-29 09:34:53,218 - INFO - Backend API started.
+2024-11-29 09:39:17,084 - INFO - Backend API started.
+2024-11-29 09:39:17,962 - INFO - generate_quiz initial type_ : python
+2024-11-29 09:39:17,962 - INFO - generate_quiz initial session_no : 0
+2024-11-29 09:39:17,962 - INFO - generate_quiz initial user_id : sj5black
+2024-11-29 09:39:17,962 - INFO - generate_quiz initial request.topic : python
+2024-11-29 09:39:17,962 - INFO - generate_quiz initial order : 3
+2024-11-29 09:39:17,962 - INFO - Generating quiz for topic: python
+2024-11-29 09:39:23,416 - INFO - set_type test -> type_ : ml
+2024-11-29 09:39:23,452 - INFO - generate_quiz initial type_ : python
+2024-11-29 09:39:23,452 - INFO - generate_quiz initial session_no : 0
+2024-11-29 09:39:23,453 - INFO - generate_quiz initial user_id : sj5black
+2024-11-29 09:39:23,453 - INFO - generate_quiz initial request.topic : ml
+2024-11-29 09:39:23,453 - INFO - generate_quiz initial order : 3
+2024-11-29 09:39:23,453 - INFO - Generating quiz for topic: ml
+2024-11-29 09:39:27,278 - INFO - Backend API started.
+2024-11-29 09:39:28,621 - INFO - set_type test -> type_ : dl
+2024-11-29 09:39:28,656 - INFO - generate_quiz initial type_ : python
+2024-11-29 09:39:28,656 - INFO - generate_quiz initial session_no : 0
+2024-11-29 09:39:28,656 - INFO - generate_quiz initial user_id : sj5black
+2024-11-29 09:39:28,656 - INFO - generate_quiz initial request.topic : dl
+2024-11-29 09:39:28,656 - INFO - generate_quiz initial order : 3
+2024-11-29 09:39:28,656 - INFO - Generating quiz for topic: dl
+2024-11-29 09:39:32,530 - INFO - Backend API started.
+2024-11-29 09:41:12,459 - INFO - Backend API started.
+2024-11-29 09:41:15,991 - INFO - Backend API started.
+2024-11-29 09:41:32,646 - INFO - Backend API started.
+2024-11-29 09:41:36,565 - INFO - Backend API started.
+2024-11-29 09:41:40,484 - INFO - Backend API started.
+2024-11-29 09:41:44,340 - INFO - Backend API started.
+2024-11-29 09:41:48,111 - INFO - Backend API started.
+2024-11-29 09:41:59,876 - INFO - Backend API started.
+2024-11-29 09:42:03,751 - INFO - Backend API started.
+2024-11-29 09:42:11,064 - INFO - Backend API started.
+2024-11-29 09:42:14,961 - INFO - Backend API started.
+2024-11-29 09:42:18,809 - INFO - Backend API started.
+2024-11-29 09:42:38,849 - INFO - generate_quiz initial type_ : python
+2024-11-29 09:42:38,849 - INFO - generate_quiz initial session_no : 0
+2024-11-29 09:42:38,849 - INFO - generate_quiz initial user_id : sj5black
+2024-11-29 09:42:38,849 - INFO - generate_quiz initial request.topic : python
+2024-11-29 09:42:38,849 - INFO - generate_quiz initial order : 3
+2024-11-29 09:42:38,849 - INFO - Generating quiz for topic: python
+2024-11-29 09:42:42,624 - INFO - Backend API started.
+2024-11-29 09:48:47,683 - INFO - Backend API started.
+2024-11-29 09:48:47,684 - INFO - Backend API started.
+2024-11-29 12:51:05,376 - INFO - Backend API started.
+2024-11-29 12:55:05,998 - INFO - Backend API started.
+2024-11-29 12:56:59,956 - INFO - Backend API started.
+2024-11-29 12:59:25,073 - INFO - Backend API started.
+2024-11-29 13:00:27,338 - INFO - Backend API started.
+2024-11-29 13:00:28,211 - INFO - generate_quiz initial type_ : python
+2024-11-29 13:00:28,211 - INFO - generate_quiz initial session_no : 0
+2024-11-29 13:00:28,211 - INFO - generate_quiz initial user_id : sj5black
+2024-11-29 13:00:28,211 - INFO - generate_quiz initial request.topic : python
+2024-11-29 13:00:28,211 - INFO - generate_quiz initial order : 3
+2024-11-29 13:00:28,211 - INFO - Generating quiz for topic: python
