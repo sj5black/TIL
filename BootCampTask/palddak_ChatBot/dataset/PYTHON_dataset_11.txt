@@ -1,83 +1,107 @@
-데이터 변형해보기: 그룹화 및 집계, 피벗테이블📕인공지능을 위한 파이썬 라이브러리/📘인공지능을 위한 파이썬 라이브러리 - 4주차/2️⃣데이터 변형해보기: 그룹화 및 집계, 피벗테이블Made with2️⃣데이터 변형해보기: 그룹화 및 집계, 피벗테이블수업 목표판다스에서 그룹화 및 피벗테이블을 생성하는 방법에 대해서 알아봅니다.목차데이터 그룹화 및 집계 피벗테이블 사용하기요약데이터 그룹화 및 집계 📚데이터 그룹화는 데이터를 특정 기준에 따라 그룹으로 나누고, 집계는 각 그룹에 대해 요약 통계를 계산하는 과정입니다. 판다스에서는 groupby()와 집계 함수들을 사용해 이를 손쉽게 수행할 수 있습니다.groupby()를 사용한 그룹화groupby() 함수는 데이터를 특정 열을 기준으로 그룹화합니다.PythonCopyimport pandas as pd
+데이터 전처리: 결측치 탐지와 다양한 처리 방법📕인공지능을 위한 파이썬 라이브러리/📘인공지능을 위한 파이썬 라이브러리 - 5주차/1️⃣데이터 전처리: 결측치 탐지와 다양한 처리 방법1️⃣데이터 전처리: 결측치 탐지와 다양한 처리 방법수업 목표불러온 데이터에서 결측치를 찾고 대체하는 방법에 대해서 학습합니다.목차결측치 탐지결측치 처리 방법고급 결측치 처리 방법요약결측치 탐지📚데이터 분석에서 결측치(Missing Values)는 흔히 발생하며, 이를 올바르게 처리하는 것이 중요합니다. 판다스는 결측치를 쉽게 탐지하고 처리할 수 있는 다양한 기능을 제공합니다.isna()와 isnull()로 결측치 탐지isna()와 isnull() 함수는 데이터프레임의 각 요소가 결측치인지 여부를 확인합니다. 두 함수는 동일한 기능을 합니다.PythonCopyimport pandas as pd
 
 # 예시 데이터프레임 생성
 data = {
-'이름': ['철수', '영희', '민수', '지수', '철수', '영희'],
-'과목': ['수학', '수학', '과학', '과학', '영어', '영어'],
-'점수': [90, 85, 95, 80, 75, 88]
+'이름': ['철수', '영희', '민수', '지수'],
+'나이': [25, 30, None, 35],
+'직업': ['학생', '회사원', '학생', None]
 }
 df = pd.DataFrame(data)
-# '이름'을 기준으로 그룹화
-grouped = df.groupby('이름')
+# 결측치 여부 확인
+print(df.isna())
 
-​집계 함수 사용하기그룹화한 데이터에 대해 다양한 집계 함수(mean, sum, count 등)를 사용할 수 있습니다.PythonCopy# 각 학생의 평균 점수 계산
-mean_scores = grouped['점수'].mean()
-print(mean_scores)
+​결과:Plain TextCopy     이름     나이    직업
+0  False  False  False
+1  False  False  False
+2  False   True  False
+3  False  False   True
 
-​결과:Plain TextCopy이름
-민수    95.0
-영희    86.5
-철수    82.5
-지수    80.0
-Name: 점수, dtype: float64
+​sum()을 사용한 결측치 개수 확인결측치의 총 개수를 확인하려면 isna() 또는 isnull()과 sum()을 조합해 사용합니다.PythonCopy# 각 열별 결측치 개수 확인
+print(df.isna().sum())
 
-​여러 집계 함수를 동시에 사용할 수도 있습니다.PythonCopy# 각 학생의 점수 합계와 평균 계산
-agg_scores = grouped['점수'].agg(['sum', 'mean'])
-print(agg_scores)
+​결과:Plain TextCopy이름    0
+나이    1
+직업    1
+dtype: int64
 
-​결과:Plain TextCopy      sum  mean
-이름
-민수    95  95.0
-영희   173  86.5
-철수   165  82.5
-지수    80  80.0
+​결측치 처리 방법📚결측치를 적절하게 처리하는 방법은 데이터의 특성과 분석 목적에 따라 달라집니다. 여기서는 대표적인 처리 방법들을 소개합니다.결측치 제거결측치가 포함된 행이나 열을 삭제할 수 있습니다. dropna() 함수를 사용합니다.PythonCopy# 결측치가 있는 행 제거
+df_dropped_rows = df.dropna()
+print(df_dropped_rows)
 
-​여러 열을 기준으로 그룹화하기여러 열을 기준으로 그룹화할 수도 있습니다.PythonCopy# '이름'과 '과목'을 기준으로 그룹화하여 점수 합계 계산
-grouped_multi = df.groupby(['이름', '과목'])['점수'].sum()
-print(grouped_multi)
+​결과:Plain TextCopy   이름   나이    직업
+0  철수  25.0   학생
+1  영희  30.0  회사원
 
-​결과:Plain TextCopy이름  과목
-민수  과학    95
-영희  수학    85
-      영어    88
-철수  수학    90
-      영어    75
-지수  과학    80
-Name: 점수, dtype: int64
+​결측치가 있는 열을 제거하려면 axis=1을 지정합니다.PythonCopy# 결측치가 있는 열 제거
+df_dropped_columns = df.dropna(axis=1)
+print(df_dropped_columns)
 
-​피벗테이블 사용하기📚피벗테이블은 데이터를 요약하는 강력한 도구입니다. 엑셀의 피벗테이블과 유사하며, 특정 기준에 따라 데이터를 재구조화할 수 있습니다.pivot_table() 기본 사용법pivot_table() 함수는 데이터를 요약하고, 특정 기준에 따라 재구조화합니다.PythonCopy# 피벗테이블 생성: '이름'을 인덱스로, '과목'을 컬럼으로 하여 점수의 평균 계산
-pivot = pd.pivot_table(df, index='이름', columns='과목', values='점수', aggfunc='mean')
-print(pivot)
+​결과:Plain TextCopy   이름
+0  철수
+1  영희
+2  민수
+3  지수
 
-​결과:Plain TextCopy과목   과학    수학    영어
-이름
-민수  95.0   NaN   NaN
-영희   NaN  85.0  88.0
-철수   NaN  90.0  75.0
-지수  80.0   NaN   NaN
+​결측치 대체(채우기)결측치를 특정 값으로 대체(채우기)할 수 있습니다. fillna() 함수를 사용합니다.PythonCopy# 결측치를 '없음'으로 대체
+df_filled = df.fillna('없음')
+print(df_filled)
 
-​여러 집계 함수 사용하기aggfunc에 여러 집계 함수를 지정하면, 다양한 요약 통계를 얻을 수 있습니다.PythonCopy# 점수의 합계와 평균을 계산하는 피벗테이블 생성
-pivot_multi = pd.pivot_table(df, index='이름', columns='과목', values='점수', aggfunc=['sum', 'mean'])
-print(pivot_multi)
+​결과:Plain TextCopy   이름    나이    직업
+0  철수   25.0    학생
+1  영희   30.0  회사원
+2  민수  없음    학생
+3  지수   35.0   없음
 
-​결과:Plain TextCopy        sum          mean
-과목     과학   수학   영어   과학   수학   영어
-이름
-민수   95.0   NaN   NaN  95.0   NaN   NaN
-영희    NaN  85.0  88.0   NaN  85.0  88.0
-철수    NaN  90.0  75.0   NaN  90.0  75.0
-지수   80.0   NaN   NaN  80.0   NaN   NaN
+​평균, 중앙값, 최빈값 등으로 결측치를 채울 수 있습니다.PythonCopy# '나이' 열의 결측치를 평균값으로 대체
+df['나이'] = df['나이'].fillna(df['나이'].mean())
+print(df)
 
-​margins 옵션을 사용해 전체 합계 추가하기margins=True 옵션을 사용하면, 각 행과 열의 합계가 추가된 피벗테이블을 생성할 수 있습니다.PythonCopy# 각 이름별, 과목별 총합을 포함한 피벗테이블 생성
-pivot_with_totals = pd.pivot_table(df, index='이름', columns='과목', values='점수', aggfunc='sum', margins=True)
-print(pivot_with_totals)
+​결과:Plain TextCopy   이름    나이    직업
+0  철수  25.0    학생
+1  영희  30.0  회사원
+2  민수  30.0    학생
+3  지수  35.0   없음
 
-​결과:Plain TextCopy과목      과학    수학    영어     All
-이름
-민수    95.0   NaN   NaN    95.0
-영희     NaN  85.0  88.0   173.0
-철수     NaN  90.0  75.0   165.0
-지수    80.0   NaN   NaN    80.0
-All   175.0  175.0  163.0  513.0
+​결측치 보간(Interpolation)결측치를 주변 값들을 기반으로 보간할 수 있습니다. interpolate() 함수를 사용합니다. 특히 시간 데이터를 다룰 때 유용합니다.PythonCopy# 예시 데이터프레임 생성
+data = {
+'날짜': pd.date_range('2023-01-01', periods=5),
+'온도': [20, 22, None, 24, 25]
+}
+df2 = pd.DataFrame(data)
+# 선형 보간법으로 결측치 채우기
+df2['온도'] = df2['온도'].interpolate()
+print(df2)
 
-​요약📚요약그룹화는 groupby()를 사용해 데이터를 특정 기준에 따라 그룹으로 나누고, 집계 함수를 사용해 각 그룹에 대한 통계를 계산할 수 있습니다.피벗테이블은 pivot_table()을 사용해 데이터를 요약하고 재구조화할 수 있으며, 여러 집계 함수와 margins 옵션을 통해 전체 합계를 포함할 수 있습니다.그룹화와 피벗테이블은 데이터 분석에서 데이터를 효율적으로 요약하고 패턴을 발견하는 데 매우 유용합니다.이제 데이터를 그룹화하고 피벗테이블을 사용하여 분석을 한 단계 더 깊이 있게 진행해보세요! 😊
+​결과:Plain TextCopy         날짜    온도
+0 2023-01-01  20.0
+1 2023-01-02  22.0
+2 2023-01-03  23.0
+3 2023-01-04  24.0
+4 2023-01-05  25.0
+
+​고급 결측치 처리 방법특정 조건을 기반으로 결측치 처리특정 조건을 기반으로 결측치를 처리할 수도 있습니다. 예를 들어, 다른 열의 값을 기준으로 결측치를 채우는 방법입니다.PythonCopy# '직업'이 '학생'인 경우 '나이'를 20으로 채우기
+df.loc[(df['직업'] == '학생') & (df['나이'].isna()), '나이'] = 20
+print(df)
+
+​결과:Plain TextCopy   이름    나이    직업
+0  철수  25.0    학생
+1  영희  30.0  회사원
+2  민수  20.0    학생
+3  지수  35.0   없음
+
+​apply()를 사용한 사용자 정의 함수 적용apply() 함수를 사용해 결측치를 처리하는 사용자 정의 함수를 적용할 수 있습니다.PythonCopy# 예시: '나이'가 결측치일 경우, 기본값으로 18을 채우는 함수
+def fill_missing_age(x):
+if pd.isna(x):
+return 18
+return x
+
+df['나이'] = df['나이'].apply(fill_missing_age)
+print(df)
+
+​결과:Plain TextCopy   이름    나이    직업
+0  철수  25.0    학생
+1  영희  30.0  회사원
+2  민수  20.0    학생
+3  지수  35.0   없음
+
+​요약📚요약결측치 탐지는 isna()와 isnull()을 사용해 수행하며, sum()을 통해 열별 결측치 개수를 확인할 수 있습니다.결측치 처리 방법으로는 행 또는 열 삭제(dropna()), 특정 값으로 채우기(fillna()), 보간법(interpolate()), 조건 기반 처리 및 사용자 정의 함수 적용 등이 있습니다.데이터의 특성과 분석 목적에 따라 적절한 결측치 처리 방법을 선택하는 것이 중요합니다.이제 결측치를 효과적으로 처리하여 더 정확한 분석 결과를 얻어보세요! 😊
