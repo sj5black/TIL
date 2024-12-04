@@ -1,0 +1,7 @@
+ChatID,Role,Content
+New452,🤖,"Conda를 사용하여 가상환경을 만들 때 특정 파이썬 버전과 패키지를 함께 설치할 수 있는 명령어는 무엇인가요?
+
+a) conda create --name myenv  
+b) conda create --name myenv python=3.8 pandas  
+c) conda activate myenv  
+d) conda install jupyter notebook"
