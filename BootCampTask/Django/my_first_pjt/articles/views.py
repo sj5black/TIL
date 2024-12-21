@@ -2,7 +2,9 @@
 장고 공식문서 페이지
 https://docs.djangoproject.com/en/4.2/
 """
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST, require_http_methods
 
 from .forms import ArticleForm
 from .models import Article
@@ -13,6 +15,7 @@ def index(request):
 	# return response
     return render(request, "articles/index.html")
 
+@login_required
 def create(request):
     form = ArticleForm(request.POST) if request.method == "POST" else ArticleForm()
     
@@ -29,19 +32,21 @@ def articles(request):
     return render(request, "articles/articles.html", context)
 
 def article_detail(request, pk):
-    article = Article.objects.get(id=pk)
+    article = get_object_or_404(Article, pk=pk)
     context = {"article" : article}
     return render(request, "articles/article_detail.html", context)
 
+@require_POST
 def delete(request, pk):
-    article = Article.objects.get(pk=pk)
-    if request.method == "POST":
+    if request.user.is_authenticated:
+        article = get_object_or_404(Article, pk=pk)
         article.delete()
-        return redirect("articles:articles")
-    return redirect("articles:article_detail", article.pk)
+    return redirect("articles:articles")
 
+@login_required
+@require_http_methods(["GET", "POST"])
 def update(request, pk):
-    article = Article.objects.get(pk=pk)
+    article = get_object_or_404(Article, pk=pk)
     
     if request.method == "POST":
         # instance를 선언하면, 새로 만드는게 아닌 기존것을 수정한다다
@@ -57,6 +62,31 @@ def update(request, pk):
         "article": article,
     }
     return render(request, "articles/update.html", context)
+
+
+
+def data_throw(request):
+    return render(request, "articles/data_throw.html")
+
+def data_catch(request):
+    message = request.GET.get("message")
+    context = {"data" : message, }
+    return render(request, "articles/data_catch.html", context)
+
+def hello(request):
+    name = "Teddy"
+    tags = ["python", "django", "html", "css"]
+    books = ["해변의 카프카", "코스모스", "백설공주", "어린왕자"]
+
+    context = {
+        "name" : name,
+        "tags" : tags,
+        "books" : books,
+        }
+    return render(request, "articles/hello.html", context)
+
+
+##### 이전 버전 메서드 ######
 
 # def edit(request, pk):
 #     article = Article.objects.get(pk=pk)
@@ -81,22 +111,9 @@ def update(request, pk):
 #     article.save()
 #     return redirect("articles:article_detail", article.pk)
 
-def data_throw(request):
-    return render(request, "articles/data_throw.html")
-
-def data_catch(request):
-    message = request.GET.get("message")
-    context = {"data" : message, }
-    return render(request, "articles/data_catch.html", context)
-
-def hello(request):
-    name = "Teddy"
-    tags = ["python", "django", "html", "css"]
-    books = ["해변의 카프카", "코스모스", "백설공주", "어린왕자"]
-
-    context = {
-        "name" : name,
-        "tags" : tags,
-        "books" : books,
-        }
-    return render(request, "articles/hello.html", context)
+# def delete(request, pk):
+#     article = get_object_or_404(Article, pk=pk)
+#     if request.method == "POST":
+#         article.delete()
+#         return redirect("articles:articles")
+#     return redirect("articles:article_detail", article.pk)
