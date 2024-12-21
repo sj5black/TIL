@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Articles</h1>
+
+    {% for article in articles %}
+        <a href="{% url "articles:article_detail" article.pk %}">
+            <p>[{{article.pk}}]{{article.title}}</p>
+        </a>
+        <hr>
+    {% endfor %}
+    <a href="{% url "index" %}">
+        <button>INDEX로 가기</button>
+    </a><br>
+    <a href="{% url "articles:create" %}">
+        <button>새 글 쓰기</button>
+    </a>
+{% endblock content %}

@@ -3,7 +3,7 @@
 {% block content %}
     <h1>Data Throw</h1>
 
-    <form action="{% url 'data-catch' %}" method="GET">
+    <form action="{% url "articles:data-catch" %}" method="GET">
         <label for="my-data">데이터 입력 : </label>
         
         <!-- type 관련 MDN 공식 문서 참조 -->

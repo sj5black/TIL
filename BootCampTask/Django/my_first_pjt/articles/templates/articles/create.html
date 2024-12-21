@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+    <h2>New Article</h2>
+    
+    <form action="{% url "articles:create" %}" method="POST">
+        {% csrf_token %}
+        
+        {{ form.as_p }}
+        {% comment %} <label for="title">제목</label>
+        <input type="text" name="title" id="title"><br><br>
+
+        <label for="content">내용</label>
+        <textarea type="text" name="content" id="content" cols="30" rows="10"></textarea><br><br> {% endcomment %}
+
+        <button type="submit">저장</button>
+
+    </form>
+    
+{% endblock content %}

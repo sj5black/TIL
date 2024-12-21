@@ -5,6 +5,6 @@
     <h3>Current Data</h3>
     <p>Current data is : {{ data }}</p> 
 
-    <a href="{% url 'data-throw' %}">다시 데이터 보내러가기</a>
+    <a href="{% url "articles:data-throw" %}">다시 데이터 보내러가기</a>
     </form>
 {% endblock content %}

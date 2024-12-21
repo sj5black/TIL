@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<h1>Update Article</h1>
+
+<form action="{% url "articles:update" article.pk %}" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <button type="submit">저장</button>
+</form>
+
+
+{% endblock content %}

@@ -1,0 +1,10 @@
+<!-- ! + TAB 시 html 기본포맷 자동완성 -->
+{% extends "base.html" %}
+{% block content %}
+    <h1>Hello, Django!</h1>
+    <a href="{% url "articles:hello" %}">Hello 이동</a><br>
+    <a href="{% url "articles:data-throw" %}">Throw로 이동</a><br>
+    <a href="{% url "users:users" %}">Users로 이동</a><br>
+    <a href="{% url "articles:articles" %}">게시판으로 이동</a><br>
+    
+{% endblock content %}
