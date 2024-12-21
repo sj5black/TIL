@@ -1,13 +1,14 @@
 # 🤖 RAG를 활용한 Sparta 복습용 챗봇 만들기
 
 ## 📖 목차
-1. [How To Use](#-how-to-use)
-2. [Directory Structure](#-directory-structure)
-3. [팀 소개 및 협업 도구](#-팀-소개-및-협업-도구)
-4. [프로젝트 소개](#-프로젝트-소개)
-5. [프로젝트 계기](#-프로젝트-계기)
-6. [프로젝트 핵심 목표](#-프로젝트-핵심-목표)
-7. [Key Summary](#️-key-summary)
+
+1. [팀 소개 및 협업 도구](#-팀-소개-및-협업-도구)
+2. [프로젝트 소개](#-프로젝트-소개)
+3. [프로젝트 계기](#-프로젝트-계기)
+4. [프로젝트 핵심 목표](#-프로젝트-핵심-목표)
+5. [Key Summary](#️-key-summary)
+6. [How To Use](#-how-to-use)
+7. [Directory Structure](#-directory-structure)
 8. [인프라 아키텍처 & 적용 기술](#-인프라-아키텍처-적용-기술)
 9. [주요기능](#-주요기능)
 10. [서비스 구조](#-서비스-구조)
@@ -15,95 +16,21 @@
 12. [Timeline](#-timeline)
 
 ---
-## 📣 How To Use
-```
-1. 원격 저장소에 올라와 있는 코드 clone 받기
-git clone https://github.com/KooSuYeon/palddakpalddak.git
-
-2. 라이브러리 사용을 위한 Conda 환경 생성
-- for Linux/macOS
-(사전에 Anaconda가 설치되어 있어야 합니다.)
-(conda 24.5.0)
-conda env create -f palddak.yaml
-
-- for Windows
-(사전에 Anaconda가 설치되어 있어야 합니다.)
-(conda 24.5.0)
-conda env create -f palddak_win.yaml
-
-3. 환경 활성화
-conda activate palddak
-
-4. 사전에 공유된 구글 드라이브 링크에서 dataset 디렉터리를 다운로드 받아준 후 루트 디렉터리에 해당 디렉터리를 위치시켜 줍니다.
-
-5. .env 설정
-OPENAI_API_KEY, DEEPL_API_KEY, ELEVENLABS_API_KEY 환경 설정을 해줍니다.
-
-6. 실행 
-streamlit run v2_Client_UI.py  
-  
-```
-
----
-
-## 🔍 Directory Structure
-
-- 동작을 위해 필요한 파일 : palddak_backend.py, palddak_frontend.py, rag_model.py, audio_model.py, dataset 디렉터리, palddak.yaml
-- be, fe, rag_model : 백엔드, 프론트엔드, rag모델 버전 관리 (이전 버전)
-- rag_model_output, user_chatlog_client, user_chatlog_server : 사용자 채팅 관리
-
-```
-palddakpalddak/
-├── be/ # 과거 백엔드 버전
-│   ├── get_history_app.py
-│   ├── get_specific_input.py
-│   └── v0_be.py
-├── dataset/ # 교재가 들어있는 디렉터리 (반드시 존재해야합니다!!!)
-├── fe/ # 과거 프론트엔드 버전
-│   ├── v1_fe.py
-│   └── v2_fe.py
-├── pre_processing/ # 데이터셋 전처리 디렉터리
-│   ├── pre_processing.py # 실제 교재 전처리 코드
-│   └── pre_processing_opensource # 실제 open_source 전처리 코드
-├── rag_model/ # 과거 rag_model 버전
-│   ├── naive_rag_model.py
-│   ├── v0_rag_chatbot.ipynb
-│   ├── v1_rag_chatbot.ipynb
-│   ├── v2_rag_chatbot.ipynb
-│   ├── v3_rag_chatbot.ipynb
-│   ├── v4_rag_chatbot.ipynb
-│   └── v5_rag_chatbot.ipynb
-├── rag_model_output/ # RAG 모델 구동 output 세션 별로 저장 파일 명의 형태, DB 처럼 관리 목적
-    {user_id}_{session_no}_{type_}_{order}_quiz.txt
-    {user_id}_{session_no}_{type_}_{order}_user.txt
-    {user_id}_{session_no}_{type_}_{order}_feedback.txt
-├── user_chatlog_client/ # client 단 저장하는 채팅로그
-├── user_chatlog_server/ # server 단 저장하는 채팅로그
-├── .gitignore
-├── audio_model.py # 음성 출력 모델
-├── rag_model.py # 학습용 챗봇 모델
-├── Readme.md
-├── requirements.txt
-├── palddak_backend.py # 실제 BE
-└── palddak_frontend.py # 실제 FE
-└── palddak.yaml # 환경 활성화 파일
-
-```
-
-
-
-
+## 📋 프로젝트 소개
+- 프로젝트명 : Sparta Review Helper
+- 개발 기간 : 2024.11.21 - 2024.12.03
+- SA 문서 : https://teamsparta.notion.site/Software-Architecture-1382dc3ef514817cb6bfc7ca3536665c
 ---
 ## 🦾 팀 소개 및 협업 도구
 - 팀명 : 팔딱팔딱
 
 | 이름   | 역할                            |
 |--------|---------------------------------|
-| 구수연 | 팀장, AI 모델 개발, 데이터 수집, 대화세션 관리, 모델 성능개선 |
-| 박성진 | 데이터 전처리, API, 데이터 수집, SA 문서, 서버 개발 |
-| 윤수진 | Streamlit UI, 데이터 수집, 대화세션 관리 |
+| 구수연 | 팀장, AI 모델 개발, 데이터 수집, 대화세션 관리, 모델 성능개선, 번역 기능 구현 |
+| 박성진 | 데이터 전처리, API, 데이터 수집, SA 문서, 클라이언트-서버 연동, 대화세션 관리, 음성 대화기능 구현 |
+| 윤수진 | Streamlit UI, 데이터 수집, 대화세션 관리, PPT 문서 |
 | 이현승 | Streamlit UI, 데이터 수집       |
-| 김윤소 | AI 모델 개발, API, 데이터 수집  |
+| 김윤소 | AI 모델 개발, API, 데이터 수집, 음성 관련 API  |
 
 - 협업도구
    - GitHub
@@ -112,12 +39,6 @@ palddakpalddak/
    - Notion
    - Figma
 - 버전관리: Git (배포 X)
-
-
----
-## 📋 프로젝트 소개
-- 프로젝트명 : Sparta Review Helper
-- 개발 기간 : 2024.11.21 - 2024.12.03
 
 ---
 ## 💡 프로젝트 계기
@@ -249,7 +170,81 @@ palddakpalddak/
    ```
 
   </details>
+---
+## 📣 How To Use
+```
+1. 원격 저장소에 올라와 있는 코드 clone 받기
+git clone https://github.com/KooSuYeon/palddakpalddak.git
 
+2. 라이브러리 사용을 위한 Conda 환경 생성
+- for Linux/macOS
+(사전에 Anaconda가 설치되어 있어야 합니다.)
+(conda 24.5.0)
+conda env create -f palddak.yaml
+
+- for Windows
+(사전에 Anaconda가 설치되어 있어야 합니다.)
+(conda 24.5.0)
+conda env create -f palddak_win.yaml
+
+3. 환경 활성화
+conda activate palddak
+
+4. 사전에 공유된 구글 드라이브 링크에서 dataset 디렉터리를 다운로드 받아준 후 루트 디렉터리에 해당 디렉터리를 위치시켜 줍니다.
+
+5. .env 설정
+OPENAI_API_KEY, DEEPL_API_KEY, ELEVENLABS_API_KEY 환경 설정을 해줍니다.
+
+6. 실행 
+streamlit run v2_Client_UI.py  
+  
+```
+
+---
+
+## 🔍 Directory Structure
+
+- 동작을 위해 필요한 파일 : palddak_backend.py, palddak_frontend.py, rag_model.py, audio_model.py, dataset 디렉터리, palddak.yaml
+- be, fe, rag_model : 백엔드, 프론트엔드, rag모델 버전 관리 (이전 버전)
+- rag_model_output, user_chatlog_client, user_chatlog_server : 사용자 채팅 관리
+
+```
+palddakpalddak/
+├── be/ # 과거 백엔드 버전
+│   ├── get_history_app.py
+│   ├── get_specific_input.py
+│   └── v0_be.py
+├── dataset/ # 교재가 들어있는 디렉터리 (반드시 존재해야합니다!!!)
+├── fe/ # 과거 프론트엔드 버전
+│   ├── v1_fe.py
+│   └── v2_fe.py
+├── pre_processing/ # 데이터셋 전처리 디렉터리
+│   ├── pre_processing.py # 실제 교재 전처리 코드
+│   └── pre_processing_opensource # 실제 open_source 전처리 코드
+├── rag_model/ # 과거 rag_model 버전
+│   ├── naive_rag_model.py
+│   ├── v0_rag_chatbot.ipynb
+│   ├── v1_rag_chatbot.ipynb
+│   ├── v2_rag_chatbot.ipynb
+│   ├── v3_rag_chatbot.ipynb
+│   ├── v4_rag_chatbot.ipynb
+│   └── v5_rag_chatbot.ipynb
+├── rag_model_output/ # RAG 모델 구동 output 세션 별로 저장 파일 명의 형태, DB 처럼 관리 목적
+    {user_id}_{session_no}_{type_}_{order}_quiz.txt
+    {user_id}_{session_no}_{type_}_{order}_user.txt
+    {user_id}_{session_no}_{type_}_{order}_feedback.txt
+├── user_chatlog_client/ # client 단 저장하는 채팅로그
+├── user_chatlog_server/ # server 단 저장하는 채팅로그
+├── .gitignore
+├── audio_model.py # 음성 출력 모델
+├── rag_model.py # 학습용 챗봇 모델
+├── Readme.md
+├── requirements.txt
+├── palddak_backend.py # 실제 BE
+└── palddak_frontend.py # 실제 FE
+└── palddak.yaml # 환경 활성화 파일
+
+```
 ---
 ## 🏠 인프라 아키텍처 & 적용 기술
 
@@ -411,17 +406,6 @@ palddakpalddak/
       - 대화내역 보기 가시성 개선 : 기존 assisstant 와 user 로 이어진 대화내역을 텍스트아이콘과 대화 간 "\n\n" 연산자를 이중 삽입하여 가시성을 개선했습니다.
       - 서버 실행로직 개선 : server_check 엔드포인트로 서버상태를 확인 후 페이지가 로드되게 개선하였습니다.
       - 세션변수 관리 : 클라이언트 상에서 사용되는 세션변수를 각 기능에 맞게 관리하고 코드 안정성을 개선하였습니다.
-      
-      [문제 정의]
-      
-      [가설]
-      
-      [해결 방안]
-         
-      [해결 완료]
-      
-      [회고]
-      
 
    </div>
    </details>
