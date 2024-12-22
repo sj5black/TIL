@@ -6,8 +6,8 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST, require_http_methods
 
-from .forms import ArticleForm
-from .models import Article
+from .forms import ArticleForm, CommentForm
+from .models import Article, Comment
 # from django.http import HttpResponse
 
 def index(request):
@@ -17,7 +17,7 @@ def index(request):
 
 @login_required
 def create(request):
-    form = ArticleForm(request.POST) if request.method == "POST" else ArticleForm()
+    form = ArticleForm(request.POST, request.FILES) if request.method == "POST" else ArticleForm()
     
     if request.method == "POST" and form.is_valid():
         article = form.save()
@@ -33,7 +33,15 @@ def articles(request):
 
 def article_detail(request, pk):
     article = get_object_or_404(Article, pk=pk)
-    context = {"article" : article}
+    comment_form = CommentForm()
+    comments = article.comments.all().order_by("-id")
+    total_comments = article.comments.count()
+    context = {
+        "article" : article, 
+        "comment_form" : comment_form,
+        "comments" : comments,
+        "total_comments" : total_comments
+        }
     return render(request, "articles/article_detail.html", context)
 
 @require_POST
@@ -62,6 +70,42 @@ def update(request, pk):
         "article": article,
     }
     return render(request, "articles/update.html", context)
+
+@require_POST
+def comment_create(request, pk):
+    article = get_object_or_404(Article, pk=pk)
+    form = CommentForm(request.POST)
+    if form.is_valid():
+        comment = form.save(commit=False)
+        comment.article = article
+        comment.save()
+    return redirect("articles:article_detail", article.pk)
+
+@require_POST
+def comment_delete(request, article_pk, comment_pk):
+    comment = get_object_or_404(Comment, pk=comment_pk)
+    comment.delete()
+    return redirect("articles:article_detail", article_pk)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

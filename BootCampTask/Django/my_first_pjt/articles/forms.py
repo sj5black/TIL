@@ -1,10 +1,17 @@
 from django import forms
-from articles.models import Article
+from .models import Article, Comment
 
 class ArticleForm(forms.ModelForm):
     class Meta:
         model = Article
         fields = "__all__"
+        
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = "__all__"
+        exclude = ("article",)
+    # content = forms.CharField(max_length=200, widget=forms.Textarea)
         
 """
 class ArticleForm(forms.Form):

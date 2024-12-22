@@ -1,10 +1,3 @@
-# DB 동기화 방법(migration)
-# 1. python manage.py makemigrations
-# 2. python manage.py migrate
-"""
-
-"""
-
 from django.db import models
 
 class Article(models.Model):
@@ -12,6 +5,16 @@ class Article(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    image = models.ImageField(upload_to='images/', blank=True)
+    
     def __str__(self):
         return self.title
+
+class Comment(models.Model):
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='comments')
+    content = models.TextField(max_length=120)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return self.content

@@ -1,4 +1,5 @@
 
+<!-- ! + TAB 시 html 기본포맷 자동완성 -->
 
 ```bash
 <Django 공식 문서>
@@ -13,6 +14,14 @@ python manage.py startapp accounts >> 이후 settings.py 에 앱 등록
 python manage.py runserver
 python manage.py createsuperuser
 python manage.py changepassword <username>
+python manage.py collectstatic
+ >> settings.py 에 아래 구문 추가
+    STATICFILES_DIRS = [BASE_DIR / "static"]
+    STATIC_ROOT = BASE_DIR / "static/"
+
+<DB 구조에 변경이 있을 때(model 수정 시)>
+1. python manage.py makemigrations
+2. python manage.py migrate
 
 <Shell 문법으로 DB 수정>
 pip install django-extensions >> 이후 settings.py 에 앱 등록
@@ -23,6 +32,8 @@ python manage.py shell_plus
 <DB 활성화>
 Ctrl+Shift+P 이후 선택
 
+<이미지 처리 패키지 설치>
+pip install pillow
 ```
 
 ```python
@@ -45,4 +56,20 @@ Article.objects.filter(content__contains='my') # my가 포함된 content 조회
 article = Article.objects.get(id=1)
 article.title = 'updated title'
 article.save() // article.delete()
+
+5_1. 코멘트 추가
+python manage.py shell_plus
+article = Article.objects.get(pk=14)
+Comment.objects.create(content="first commit", article=article)
+
+5_2. 코멘트 추가
+python manage.py shell_plus
+article = Article.objects.get(pk=14)
+comment = Comment()
+comment.article = article
+comment.content = "second commit"
+comment.save()
+
+6. article -> comment 역참조 (_set 사용 or related name 으로 별명 설정)
+article.comment_set.all()
 ```
