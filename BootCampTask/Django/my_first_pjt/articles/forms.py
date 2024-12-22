@@ -5,12 +5,13 @@ class ArticleForm(forms.ModelForm):
     class Meta:
         model = Article
         fields = "__all__"
+        exclude = ("author",)
         
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = "__all__"
-        exclude = ("article",)
+        exclude = ("article","author",)
     # content = forms.CharField(max_length=200, widget=forms.Textarea)
         
 """

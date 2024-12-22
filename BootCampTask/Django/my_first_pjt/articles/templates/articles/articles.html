@@ -6,6 +6,20 @@
         <a href="{% url "articles:article_detail" article.pk %}">
             <p>[{{article.pk}}]{{article.title}}</p>
         </a>
+        <p>작성자 : {{article.author.username}}</p>
+        <form action="{% url "articles:like" article.pk %}" method="POST">
+            {% csrf_token %}
+            {% if request.user in article.like_users.all %}
+                <button class="btn btn-link text-danger">
+                    <i class="fa-solid fa-heart"></i>
+                </button>
+            {% else %}
+                <button class="btn btn-link text-danger">
+                    <i class="fa-regular fa-heart"></i>
+                </button>
+            {% endif %}
+            
+        </form>
         <hr>
     {% endfor %}
     <a href="{% url "index" %}">
