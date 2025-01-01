@@ -1,0 +1,44 @@
+version: '3.9-slim'
+
+services: # 내가 띄울 컨테이너 목록
+  db: # db라는 이름을 가진 컨테이너 (이름 수정 가능)
+    image: postgres:13 # postgres 13버전 이미지 가져오기
+    environment: # db 컨테이너의 환경변수
+      POSTGRES_DB: mydb
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+    ports: # 포트포워딩 (들어오는 포트와 나가는 포트 연결)
+      - "5480:5432" # (외부에서 연결하는 호스트의 포트번호):(컨테이너 내부에서 연결되는 포트번호 - postgresql의 기본 포트번호로 해야한다. (변경하려면 내부 설정도 같이 바꿔줘야함))
+    volumes: # 컨테이너의 볼륨(하드디스크) 경로 설정
+      - postgres_data:/var/lib/postgresql/data
+
+  web:
+    build: . #지금 docker-compose.yml이 있는 경로에서 Dockerfile을 찾아서 이미지를 빌드
+    # command: python manage.py runserver 0.0.0.0:8000 (Dockerfile에서 설정한 경우 생략)
+    volumes:
+      - .:/app # 지금 docker-compose.yml이 있는 경로를 컨테이너 내부의 /app 경로에 연결 (포트포워딩처럼 (외부):(컨테이너 내부)로 연결)
+    ports:
+      - "8000:8000"
+    depends_on: # db 컨테이너가 먼저 실행되어야 함(의존성 설정)
+      - db
+
+volumes: # 볼륨 설정(네이밍)
+  postgres_data: # postgres_data라는 이름의 볼륨
+
+
+# 터미널 명령어
+
+# docker-compose build
+
+# 컨테이너들 실행
+# docker-compose up
+# docker-compose up web (특정 컨테이너만 실행)
+# 컨테이너들 종료 및 삭제
+# docker-compose down
+# docker-compose down -v (볼륨 포함)
+# 컨테이너들 로그 확인
+# docker-compose logs
+
+# web 컨테이너가 "python manage.py migrate" 명령 실행
+# docker-compose exec web python manage.py migrate
+# docker-compose exec web python manage.py createsuperuser
